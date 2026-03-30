@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monetizando Invest — BackOffice Wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design System Tokens ─────────────────────────────── */
+:root {
+  --green:        #004132;
+  --green-light:  #005a45;
+  --green-dark:   #002a20;
+  --gold:         #D99D52;
+  --gold-light:   #F2DCC0;
+  --cream:        #F8F5F0;
+  --white:        #FFFFFF;
+  --gray:         #333333;
+  --gray-mid:     #666666;
+  --gray-light:   #E0D9D0;
+  --success:      #2E7D32;
+  --success-bg:   #E8F5E9;
+  --warning:      #F9A825;
+  --warning-bg:   #FFF8E1;
+  --error:        #C62828;
+  --error-bg:     #FFEBEE;
+  --info:         #1565C0;
+  --info-bg:      #E3F2FD;
+  --sidebar-w:    240px;
+  --font-body:    'Inter', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --radius:       6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--cream); color: var(--gray); font-size: 14px; line-height: 1.5; }
+
+/* ── Sidebar ──────────────────────────────────────────── */
+.sidebar {
+  position: fixed; left: 0; top: 0; height: 100vh; width: var(--sidebar-w);
+  background: var(--green); color: #e8f0ec; display: flex; flex-direction: column;
+  z-index: 100; overflow-y: auto; border-right: 1px solid #1a4a3a;
+}
+.sidebar-header {
+  height: 56px; display: flex; align-items: center; gap: 10px;
+  padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+}
+.sidebar-logo { width: 28px; height: 28px; background: var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--green); flex-shrink: 0; }
+.sidebar-brand { font-family: var(--font-heading); font-size: 15px; font-weight: 600; color: var(--gold-light); }
+.sidebar-nav { flex: 1; padding: 8px 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 16px;
+  cursor: pointer; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65);
+  border-radius: 0; transition: all 0.15s; user-select: none;
+}
+.nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+.nav-item.active { color: var(--gold); background: rgba(217,157,82,0.12); border-left: 3px solid var(--gold); padding-left: 13px; }
+.nav-item .icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.8; }
+.nav-item.active .icon { opacity: 1; }
+.nav-section { padding: 0; }
+.nav-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px; cursor: pointer; font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;
+  user-select: none;
+}
+.nav-section-header:hover { color: rgba(255,255,255,0.75); }
+.nav-section-header .chevron { font-size: 10px; transition: transform 0.2s; }
+.nav-section-header.open .chevron { transform: rotate(180deg); }
+.nav-children { display: none; }
+.nav-children.open { display: block; }
+.nav-child {
+  display: flex; align-items: center; gap: 8px; padding: 7px 16px 7px 40px;
+  cursor: pointer; font-size: 12.5px; color: rgba(255,255,255,0.5);
+  transition: all 0.15s; user-select: none;
+}
+.nav-child:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }
+.nav-child.active { color: var(--gold); font-weight: 500; }
+.sidebar-footer {
+  border-top: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; flex-shrink: 0;
+}
+.sidebar-user { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 6px; background: rgba(217,157,82,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85); }
+.user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+.sidebar-actions { display: flex; gap: 4px; }
+.sidebar-btn { flex: 1; padding: 6px 8px; border: none; border-radius: 4px; background: transparent; color: rgba(255,255,255,0.4); font-size: 11px; cursor: pointer; transition: all 0.15s; }
+.sidebar-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+
+/* ── Main Layout ──────────────────────────────────────── */
+.main { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; }
+.topbar {
+  height: 56px; background: var(--white); border-bottom: 1px solid var(--gray-light);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; position: sticky; top: 0; z-index: 50; flex-shrink: 0;
+}
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--gray); }
+.topbar-sub { font-size: 12px; color: var(--gray-mid); margin-top: 1px; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-badge { background: var(--gold-light); color: var(--green); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.content { flex: 1; padding: 24px; }
+
+/* ── Cards & Components ───────────────────────────────── */
+.card { background: var(--white); border: 1px solid var(--gray-light); border-radius: var(--radius); }
+.card-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--gray-light); }
+.card-title { font-size: 14px; font-weight: 600; color: var(--gray); }
+.card-subtitle { font-size: 12px; color: var(--gray-mid); margin-top: 2px; }
+.card-body { padding: 16px 20px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: var(--white); border: 1px solid var(--gray-light); border-radius: var(--radius); padding: 16px 20px; }
+.kpi-label { font-size: 12px; color: var(--gray-mid); font-weight: 500; margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 700; color: var(--gray); font-family: var(--font-heading); }
+.kpi-detail { font-size: 11px; color: var(--gray-mid); margin-top: 4px; }
+.kpi-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 10px; }
+.kpi-icon.green { background: #e8f5e9; }
+.kpi-icon.gold { background: var(--gold-light); }
+.kpi-icon.blue { background: var(--info-bg); }
+.kpi-icon.red { background: var(--error-bg); }
+
+/* ── Table ────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { background: var(--cream); padding: 10px 14px; text-align: left; font-size: 11.5px; font-weight: 600; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--gray-light); }
+tbody td { padding: 11px 14px; border-bottom: 1px solid #f0ece8; color: var(--gray); }
+tbody tr:hover { background: #faf8f5; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ── Badges ───────────────────────────────────────────── */
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-success { background: var(--success-bg); color: var(--success); }
+.badge-warning { background: var(--warning-bg); color: #b77800; }
+.badge-error { background: var(--error-bg); color: var(--error); }
+.badge-info { background: var(--info-bg); color: var(--info); }
+.badge-muted { background: #f0ece8; color: var(--gray-mid); }
+.badge-gold { background: var(--gold-light); color: #7a4f0d; }
+
+/* ── Buttons ──────────────────────────────────────────── */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+.btn-primary { background: var(--green); color: var(--white); }
+.btn-primary:hover { background: var(--green-light); }
+.btn-secondary { background: var(--gold-light); color: var(--green); border: 1px solid var(--gold); }
+.btn-secondary:hover { background: var(--gold); color: var(--white); }
+.btn-ghost { background: transparent; color: var(--gray-mid); border: 1px solid var(--gray-light); }
+.btn-ghost:hover { background: var(--cream); color: var(--gray); }
+.btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid #f5c6c6; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-icon { padding: 6px; border-radius: var(--radius); }
+
+/* ── Form Controls ────────────────────────────────────── */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12.5px; font-weight: 500; color: var(--gray); margin-bottom: 5px; }
+.form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--gray-light); border-radius: var(--radius); font-size: 13px; color: var(--gray); background: var(--white); outline: none; font-family: var(--font-body); }
+.form-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,65,50,0.08); }
+.form-select { width: 100%; padding: 8px 12px; border: 1px solid var(--gray-light); border-radius: var(--radius); font-size: 13px; color: var(--gray); background: var(--white); outline: none; font-family: var(--font-body); }
+.search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+.search-input { flex: 1; padding: 8px 12px 8px 36px; border: 1px solid var(--gray-light); border-radius: var(--radius); font-size: 13px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center; outline: none; }
+.search-input:focus { border-color: var(--green); }
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--gray-light); margin-bottom: 20px; overflow-x: auto; }
+.tab { padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--gray-mid); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.15s; }
+.tab:hover { color: var(--gray); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 600; }
+
+/* ── Sections & Grids ─────────────────────────────────── */
+.section-title { font-size: 13px; font-weight: 600; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.flex-row { display: flex; align-items: center; gap: 12px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mt-4 { margin-top: 16px; }
+.gap-2 { gap: 8px; }
+.text-sm { font-size: 12px; }
+.text-muted { color: var(--gray-mid); }
+.text-green { color: var(--green); }
+.text-gold { color: var(--gold); }
+.text-success { color: var(--success); }
+.text-error { color: var(--error); }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* ── Chart Placeholder ────────────────────────────────── */
+.chart-placeholder { height: 180px; background: linear-gradient(180deg, rgba(0,65,50,0.04) 0%, rgba(0,65,50,0.01) 100%); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; border: 1px dashed var(--gray-light); position: relative; overflow: hidden; }
+.chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 120px; padding: 0 20px; }
+.chart-bar { flex: 1; background: var(--green); border-radius: 3px 3px 0 0; opacity: 0.7; }
+.chart-line { position: absolute; bottom: 20px; left: 20px; right: 20px; height: 60px; }
+
+/* ── Login Screen (Split Panel — fiel ao Login.tsx) ──── */
+.login-screen { min-height: 100vh; display: flex; background: var(--cream); }
+.login-left {
+  width: 480px; background: var(--green); display: flex; flex-direction: column;
+  justify-content: space-between; padding: 40px; flex-shrink: 0;
+}
+.login-left-logo { display: flex; align-items: center; gap: 12px; }
+.login-left-logo img { height: 32px; width: 32px; object-fit: contain; }
+.login-left-brand { font-family: var(--font-heading); font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: -0.01em; }
+.login-left-title { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.95); line-height: 1.2; margin-bottom: 12px; }
+.login-left-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 320px; }
+.login-left-copy { font-size: 11px; color: rgba(217,157,82,0.5); }
+.login-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px; }
+.login-form-wrap { width: 100%; max-width: 380px; }
+.login-form-title { font-size: 22px; font-weight: 700; color: var(--gray); margin-bottom: 4px; }
+.login-form-sub { font-size: 13px; color: var(--gray-mid); margin-bottom: 32px; }
+.login-btn { width: 100%; padding: 11px; background: var(--green); color: var(--white); border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; cursor: pointer; margin-top: 8px; font-family: var(--font-body); height: 40px; }
+.login-btn:hover { background: var(--green-light); }
+.login-back { display: block; width: 100%; text-align: center; font-size: 12.5px; color: var(--gray-mid); margin-top: 12px; cursor: pointer; background: none; border: none; font-family: var(--font-body); }
+.login-back:hover { color: var(--gray); }
+.login-icon-box { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.login-step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.login-step-title { font-size: 18px; font-weight: 700; color: var(--gray); }
+.login-step-sub { font-size: 12.5px; color: var(--gray-mid); }
+@media (max-width: 1024px) { .login-left { display: none; } }
+.login-mobile-logo { display: none; align-items: center; gap: 10px; margin-bottom: 32px; }
+.login-mobile-logo img { height: 28px; width: 28px; object-fit: contain; }
+.login-mobile-brand { font-family: var(--font-heading); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+@media (max-width: 1024px) { .login-mobile-logo { display: flex; } }
+
+/* ── Screen Manager ───────────────────────────────────── */
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; min-height: 100vh; }
+.screen-login.active { display: block; }
+
+/* ── Pagination ───────────────────────────────────────── */
+.pagination { display: flex; align-items: center; gap: 4px; margin-top: 16px; justify-content: flex-end; }
+.page-btn { width: 30px; height: 30px; border: 1px solid var(--gray-light); border-radius: var(--radius); background: var(--white); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-mid); }
+.page-btn.active { background: var(--green); color: var(--white); border-color: var(--green); }
+.page-btn:hover:not(.active) { background: var(--cream); }
+
+/* ── Info Row ─────────────────────────────────────────── */
+.info-row { display: flex; padding: 10px 0; border-bottom: 1px solid #f5f0eb; }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 180px; font-size: 12.5px; color: var(--gray-mid); flex-shrink: 0; }
+.info-value { font-size: 13px; color: var(--gray); font-weight: 500; }
+
+/* ── Alert ────────────────────────────────────────────── */
+.alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 10px; }
+.alert-info { background: var(--info-bg); color: var(--info); border: 1px solid #90caf9; }
+.alert-warning { background: var(--warning-bg); color: #7a4f0d; border: 1px solid #ffe082; }
+.alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #a5d6a7; }
+.alert-error { background: var(--error-bg); color: var(--error); border: 1px solid #ef9a9a; }
+
+/* ── Stat Row ─────────────────────────────────────────── */
+.stat-row { display: flex; gap: 16px; margin-bottom: 20px; }
+.stat-box { flex: 1; background: var(--cream); border-radius: var(--radius); padding: 14px 16px; }
+.stat-box-label { font-size: 11px; color: var(--gray-mid); font-weight: 500; margin-bottom: 4px; }
+.stat-box-value { font-size: 18px; font-weight: 700; color: var(--gray); }
+
+/* ── Wireframe Label ──────────────────────────────────── */
+.wf-label { position: fixed; bottom: 16px; right: 16px; background: var(--green); color: var(--gold); font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 20px; z-index: 999; font-family: var(--font-body); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+/* ── Screen Index ─────────────────────────────────────── */
+.screen-index { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--green); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; }
+.screen-index.hidden { display: none; }
+.index-title { font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-align: center; }
+.index-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 40px; text-align: center; }
+.index-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; max-width: 1000px; }
+.index-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.2s; }
+.index-card:hover { background: rgba(217,157,82,0.15); border-color: var(--gold); transform: translateY(-2px); }
+.index-card-icon { font-size: 20px; margin-bottom: 8px; }
+.index-card-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.index-card-count { font-size: 11px; color: rgba(255,255,255,0.5); }
+.index-close { margin-top: 32px; }
+
+/* ── Breadcrumb ───────────────────────────────────────── */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-mid); margin-bottom: 16px; }
+.breadcrumb-sep { color: var(--gray-light); }
+.breadcrumb-current { color: var(--gray); font-weight: 500; }
+
+/* ── Detail Header ────────────────────────────────────── */
+.detail-header { background: var(--white); border: 1px solid var(--gray-light); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+.detail-name { font-size: 18px; font-weight: 700; color: var(--gray); font-family: var(--font-heading); }
+.detail-meta { display: flex; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.detail-id { font-size: 11px; color: var(--gray-mid); font-family: monospace; background: var(--cream); padding: 2px 8px; border-radius: 4px; }
+
+/* ── Action Buttons Row ───────────────────────────────── */
+.action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+/* ── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,65,50,0.2); border-radius: 3px; }
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 1200px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .index-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) { .index-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     INDEX SCREEN
+══════════════════════════════════════════════════════ -->
+<div class="screen-index" id="screenIndex">
+  <div class="index-title">Monetizando Invest</div>
+  <div class="index-subtitle">BackOffice — Wireframe Interativo · 53 telas · 12 módulos</div>
+  <div class="index-grid">
+    <div class="index-card" onclick="showScreen('login')">
+      <div class="index-card-icon">🔐</div>
+      <div class="index-card-title">Login / Auth</div>
+      <div class="index-card-count">3 telas (Credenciais, TOTP Setup, TOTP Validate)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('login-totp')">
+      <div class="index-card-icon">📱</div>
+      <div class="index-card-title">TOTP Setup</div>
+      <div class="index-card-count">Configurar autenticador (1º acesso)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('login-totp-validate')">
+      <div class="index-card-icon">🛡️</div>
+      <div class="index-card-title">TOTP Validate</div>
+      <div class="index-card-count">Verificar código (usuário recorrente)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('dashboard')">
+      <div class="index-card-icon">📊</div>
+      <div class="index-card-title">Dashboard</div>
+      <div class="index-card-count">1 tela (KPIs, Gráfico, Transações Recentes)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('usuarios-contas')">
+      <div class="index-card-icon">👥</div>
+      <div class="index-card-title">Usuários</div>
+      <div class="index-card-count">6 telas (Contas, Detalhes, Admins, Permissões, Logs, Transf.)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('empresas-cadastros')">
+      <div class="index-card-icon">🏢</div>
+      <div class="index-card-title">Empresas</div>
+      <div class="index-card-count">3 telas (Cadastros, Documentos, Compliance)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('transacoes-todas')">
+      <div class="index-card-icon">↔️</div>
+      <div class="index-card-title">Transações</div>
+      <div class="index-card-count">5 telas (Todas, PIX, TED, Boletos, Agendadas)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('pix-chaves')">
+      <div class="index-card-icon">⚡</div>
+      <div class="index-card-title">PIX</div>
+      <div class="index-card-count">6 telas (Chaves, Cobranças, Devoluções, MED, Recorrências, Portabilidade)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('financeiro-saldos')">
+      <div class="index-card-icon">💰</div>
+      <div class="index-card-title">Financeiro</div>
+      <div class="index-card-count">5 telas (Investimentos, Saldos, Extratos, Limites, Tarifas)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('seguranca-cautelar')">
+      <div class="index-card-icon">🛡️</div>
+      <div class="index-card-title">Segurança</div>
+      <div class="index-card-count">3 telas (Cautelar, Dispositivos, Auditoria)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('relatorios-operacional')">
+      <div class="index-card-icon">📋</div>
+      <div class="index-card-title">Relatórios</div>
+      <div class="index-card-count">3 telas (Operacional, Financeiro, Compliance)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('asaas-dashboard')">
+      <div class="index-card-icon">💳</div>
+      <div class="index-card-title">Asaas</div>
+      <div class="index-card-count">7 telas (Dashboard, Clientes, Cobranças, Assinaturas, Transf., Extrato, PIX)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('credito-dashboard')">
+      <div class="index-card-icon">🏦</div>
+      <div class="index-card-title">Crédito (ESC)</div>
+      <div class="index-card-count">6 telas (Dashboard, Operações, Cedentes, Sacados, Calculadora, Registros)</div>
+    </div>
+    <div class="index-card" onclick="showScreen('configuracoes-geral')">
+      <div class="index-card-icon">⚙️</div>
+      <div class="index-card-title">Configurações</div>
+      <div class="index-card-count">3 telas (Geral, Notificações, Integrações)</div>
+    </div>
+  </div>
+  <div class="index-close">
+    <button class="btn btn-secondary" onclick="hideIndex()">Entrar no BackOffice →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SIDEBAR (shared)
+══════════════════════════════════════════════════════ -->
+<template id="sidebarTemplate">
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">M</div>
+    <span class="sidebar-brand">Monetizando</span>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <div class="nav-item" onclick="showScreen('dashboard')" data-screen="dashboard">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <!-- Usuários -->
+    <div class="nav-section">
+      <div class="nav-section-header open" onclick="toggleSection(this)">
+        <span>👥 Usuários</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children open">
+        <div class="nav-child" onclick="showScreen('usuarios-contas')" data-screen="usuarios-contas">Contas</div>
+        <div class="nav-child" onclick="showScreen('usuarios-detalhes')" data-screen="usuarios-detalhes">Detalhes</div>
+        <div class="nav-child" onclick="showScreen('usuarios-admins')" data-screen="usuarios-admins">Administradores</div>
+        <div class="nav-child" onclick="showScreen('usuarios-permissoes')" data-screen="usuarios-permissoes">Permissões</div>
+        <div class="nav-child" onclick="showScreen('usuarios-logs')" data-screen="usuarios-logs">Logs de Acesso</div>
+        <div class="nav-child" onclick="showScreen('usuarios-transferencia')" data-screen="usuarios-transferencia">Transf. entre Contas</div>
+      </div>
+    </div>
+    <!-- Empresas -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>🏢 Empresas</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('empresas-cadastros')" data-screen="empresas-cadastros">Cadastros</div>
+        <div class="nav-child" onclick="showScreen('empresas-documentos')" data-screen="empresas-documentos">Documentos</div>
+        <div class="nav-child" onclick="showScreen('empresas-compliance')" data-screen="empresas-compliance">Compliance</div>
+      </div>
+    </div>
+    <!-- Transações -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>↔️ Transações</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('transacoes-todas')" data-screen="transacoes-todas">Todas</div>
+        <div class="nav-child" onclick="showScreen('transacoes-pix')" data-screen="transacoes-pix">PIX</div>
+        <div class="nav-child" onclick="showScreen('transacoes-ted')" data-screen="transacoes-ted">TED</div>
+        <div class="nav-child" onclick="showScreen('transacoes-boletos')" data-screen="transacoes-boletos">Boletos</div>
+        <div class="nav-child" onclick="showScreen('transacoes-agendadas')" data-screen="transacoes-agendadas">Agendadas</div>
+      </div>
+    </div>
+    <!-- PIX -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>⚡ PIX</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('pix-chaves')" data-screen="pix-chaves">Chaves</div>
+        <div class="nav-child" onclick="showScreen('pix-cobrancas')" data-screen="pix-cobrancas">Cobranças</div>
+        <div class="nav-child" onclick="showScreen('pix-devolucoes')" data-screen="pix-devolucoes">Devoluções</div>
+        <div class="nav-child" onclick="showScreen('pix-med')" data-screen="pix-med">MED 2.0</div>
+        <div class="nav-child" onclick="showScreen('pix-recorrencias')" data-screen="pix-recorrencias">Recorrências</div>
+        <div class="nav-child" onclick="showScreen('pix-portabilidade')" data-screen="pix-portabilidade">Portabilidade</div>
+      </div>
+    </div>
+    <!-- Financeiro -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>💰 Financeiro</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('financeiro-investimentos')" data-screen="financeiro-investimentos">Investimentos</div>
+        <div class="nav-child" onclick="showScreen('financeiro-saldos')" data-screen="financeiro-saldos">Saldos</div>
+        <div class="nav-child" onclick="showScreen('financeiro-extratos')" data-screen="financeiro-extratos">Extratos</div>
+        <div class="nav-child" onclick="showScreen('financeiro-limites')" data-screen="financeiro-limites">Limites</div>
+        <div class="nav-child" onclick="showScreen('financeiro-tarifas')" data-screen="financeiro-tarifas">Tarifas</div>
+      </div>
+    </div>
+    <!-- Segurança -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>🛡️ Segurança</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('seguranca-cautelar')" data-screen="seguranca-cautelar">Bloqueio Cautelar</div>
+        <div class="nav-child" onclick="showScreen('seguranca-dispositivos')" data-screen="seguranca-dispositivos">Dispositivos</div>
+        <div class="nav-child" onclick="showScreen('seguranca-auditoria')" data-screen="seguranca-auditoria">Auditoria</div>
+      </div>
+    </div>
+    <!-- Relatórios -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>📋 Relatórios</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('relatorios-operacional')" data-screen="relatorios-operacional">Operacional</div>
+        <div class="nav-child" onclick="showScreen('relatorios-financeiro')" data-screen="relatorios-financeiro">Financeiro</div>
+        <div class="nav-child" onclick="showScreen('relatorios-compliance')" data-screen="relatorios-compliance">Compliance</div>
+      </div>
+    </div>
+    <!-- Asaas -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>💳 Asaas</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('asaas-dashboard')" data-screen="asaas-dashboard">Dashboard</div>
+        <div class="nav-child" onclick="showScreen('asaas-clientes')" data-screen="asaas-clientes">Clientes</div>
+        <div class="nav-child" onclick="showScreen('asaas-cobrancas')" data-screen="asaas-cobrancas">Cobranças</div>
+        <div class="nav-child" onclick="showScreen('asaas-assinaturas')" data-screen="asaas-assinaturas">Assinaturas</div>
+        <div class="nav-child" onclick="showScreen('asaas-transferencias')" data-screen="asaas-transferencias">Transferências</div>
+        <div class="nav-child" onclick="showScreen('asaas-extrato')" data-screen="asaas-extrato">Extrato</div>
+        <div class="nav-child" onclick="showScreen('asaas-pix')" data-screen="asaas-pix">Chaves PIX</div>
+      </div>
+    </div>
+    <!-- Crédito -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>🏦 Crédito</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('credito-dashboard')" data-screen="credito-dashboard">Dashboard</div>
+        <div class="nav-child" onclick="showScreen('credito-operacoes')" data-screen="credito-operacoes">Operações</div>
+        <div class="nav-child" onclick="showScreen('credito-cedentes')" data-screen="credito-cedentes">Cedentes</div>
+        <div class="nav-child" onclick="showScreen('credito-sacados')" data-screen="credito-sacados">Sacados</div>
+        <div class="nav-child" onclick="showScreen('credito-calculadora')" data-screen="credito-calculadora">Calculadora</div>
+        <div class="nav-child" onclick="showScreen('credito-registros')" data-screen="credito-registros">Registros CERC/B3</div>
+      </div>
+    </div>
+    <!-- Configurações -->
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection(this)">
+        <span>⚙️ Configurações</span><span class="chevron">▼</span>
+      </div>
+      <div class="nav-children">
+        <div class="nav-child" onclick="showScreen('configuracoes-geral')" data-screen="configuracoes-geral">Geral</div>
+        <div class="nav-child" onclick="showScreen('configuracoes-notificacoes')" data-screen="configuracoes-notificacoes">Notificações</div>
+        <div class="nav-child" onclick="showScreen('configuracoes-integracoes')" data-screen="configuracoes-integracoes">Integrações</div>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Admin Monetizando</div>
+        <div class="user-role">Administrador</div>
+      </div>
+    </div>
+    <div class="sidebar-actions">
+      <button class="sidebar-btn" onclick="showScreen('login')">🌙 Escuro</button>
+      <button class="sidebar-btn" onclick="showScreen('login')">↩ Sair</button>
+    </div>
+  </div>
+</aside>
+</template>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: LOGIN
+══════════════════════════════════════════════════════ -->
+<div class="screen screen-login" id="screen-login">
+  <div class="login-screen">
+    <!-- Left Panel — Branding -->
+    <div class="login-left">
+      <div class="login-left-logo">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+        <span class="login-left-brand">Monetizando Invest</span>
+      </div>
+      <div>
+        <div class="login-left-title">BackOffice</div>
+        <p class="login-left-desc">Painel administrativo para gestão de contas, transações, compliance e operações bancárias.</p>
+      </div>
+      <p class="login-left-copy">&copy; 2026 Monetizando Digital. Todos os direitos reservados.</p>
+    </div>
+    <!-- Right Panel — Form -->
+    <div class="login-right">
+      <div class="login-form-wrap">
+        <div class="login-mobile-logo">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+          <span class="login-mobile-brand">Monetizando Invest</span>
+        </div>
+        <div class="login-form-title">Entrar</div>
+        <div class="login-form-sub">Acesse o painel administrativo</div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input class="form-input" type="email" placeholder="admin@monetizandoinvest.com" style="height:40px;font-size:13.5px;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <div style="position:relative;">
+            <input class="form-input" type="password" placeholder="••••••••" style="height:40px;font-size:13.5px;padding-right:40px;">
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--gray-mid);cursor:pointer;font-size:14px;">👁</span>
+          </div>
+        </div>
+        <button class="login-btn" onclick="showScreen('login-totp')">Entrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: LOGIN TOTP SETUP (first time) -->
+<div class="screen screen-login" id="screen-login-totp">
+  <div class="login-screen">
+    <!-- Left Panel — Branding -->
+    <div class="login-left">
+      <div class="login-left-logo">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+        <span class="login-left-brand">Monetizando Invest</span>
+      </div>
+      <div>
+        <div class="login-left-title">BackOffice</div>
+        <p class="login-left-desc">Painel administrativo para gestão de contas, transações, compliance e operações bancárias.</p>
+      </div>
+      <p class="login-left-copy">&copy; 2026 Monetizando Digital. Todos os direitos reservados.</p>
+    </div>
+    <!-- Right Panel — TOTP Setup -->
+    <div class="login-right">
+      <div class="login-form-wrap">
+        <div class="login-mobile-logo">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+          <span class="login-mobile-brand">Monetizando Invest</span>
+        </div>
+        <div class="login-step-header">
+          <div class="login-icon-box" style="background:rgba(245,158,11,0.1);">
+            <span style="color:#d97706;">📱</span>
+          </div>
+          <div>
+            <div class="login-step-title">Configurar Autenticador</div>
+            <div class="login-step-sub">Escaneie o QR Code com seu app autenticador</div>
+          </div>
+        </div>
+        <div style="padding:16px;background:var(--white);border:1px solid var(--gray-light);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <div style="width:192px;height:192px;background:#f0f0f0;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray-mid);border:1px dashed var(--gray-light);">QR Code TOTP</div>
+        </div>
+        <p style="font-size:11.5px;color:var(--gray-mid);text-align:center;margin-bottom:16px;">Use Google Authenticator, Authy ou outro app compatível com TOTP para escanear o código acima.</p>
+        <div class="form-group">
+          <label class="form-label">Código do autenticador (6 dígitos)</label>
+          <input class="form-input" type="text" placeholder="000000" style="height:40px;text-align:center;letter-spacing:0.3em;font-size:16px;font-family:monospace;">
+        </div>
+        <button class="login-btn" onclick="showScreen('dashboard')">Ativar e Verificar</button>
+        <button class="login-back" onclick="showScreen('login')">Voltar ao login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: LOGIN TOTP VALIDATE (returning user) -->
+<div class="screen screen-login" id="screen-login-totp-validate">
+  <div class="login-screen">
+    <!-- Left Panel — Branding -->
+    <div class="login-left">
+      <div class="login-left-logo">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+        <span class="login-left-brand">Monetizando Invest</span>
+      </div>
+      <div>
+        <div class="login-left-title">BackOffice</div>
+        <p class="login-left-desc">Painel administrativo para gestão de contas, transações, compliance e operações bancárias.</p>
+      </div>
+      <p class="login-left-copy">&copy; 2026 Monetizando Digital. Todos os direitos reservados.</p>
+    </div>
+    <!-- Right Panel — TOTP Validate -->
+    <div class="login-right">
+      <div class="login-form-wrap">
+        <div class="login-mobile-logo">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663127953399/Gidm7pcCeS28bqib9vJhTz/logo-icon-gold_65b79328.png" alt="Monetizando">
+          <span class="login-mobile-brand">Monetizando Invest</span>
+        </div>
+        <div class="login-step-header">
+          <div class="login-icon-box" style="background:rgba(46,125,50,0.1);">
+            <span style="color:var(--success);">🛡️</span>
+          </div>
+          <div>
+            <div class="login-step-title">Verificação TOTP</div>
+            <div class="login-step-sub">Digite o código do seu autenticador</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Código TOTP (6 dígitos)</label>
+          <input class="form-input" type="text" placeholder="000000" style="height:40px;text-align:center;letter-spacing:0.3em;font-size:16px;font-family:monospace;">
+        </div>
+        <button class="login-btn" onclick="showScreen('dashboard')">Verificar</button>
+        <button class="login-back" onclick="showScreen('login')">Voltar ao login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: DASHBOARD
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-dashboard">
+  <div class="main">
+    <div class="topbar">
+      <div><div class="topbar-title">Dashboard</div><div class="topbar-sub">Visão geral do sistema</div></div>
+      <div class="topbar-right">
+        <span class="topbar-badge">Sandbox</span>
+        <button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-icon green">👥</div><div class="kpi-label">Contas Ativas</div><div class="kpi-value">4.821</div><div class="kpi-detail">5.103 total</div></div>
+        <div class="kpi-card"><div class="kpi-icon gold">↔️</div><div class="kpi-label">Volume Transacionado</div><div class="kpi-value">R$ 12,4M</div><div class="kpi-detail">38.291 transações</div></div>
+        <div class="kpi-card"><div class="kpi-icon blue">⚡</div><div class="kpi-label">PIX (30d)</div><div class="kpi-value">22.104</div><div class="kpi-detail">R$ 8,1M</div></div>
+        <div class="kpi-card"><div class="kpi-icon red">📈</div><div class="kpi-label">TED (30d)</div><div class="kpi-value">1.847</div><div class="kpi-detail">R$ 3,2M</div></div>
+      </div>
+      <div class="grid-2 mb-6">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Volume por Dia (30d)</div></div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="chart-bars">
+                <div class="chart-bar" style="height:40%"></div><div class="chart-bar" style="height:65%"></div><div class="chart-bar" style="height:50%"></div><div class="chart-bar" style="height:80%"></div><div class="chart-bar" style="height:55%"></div><div class="chart-bar" style="height:90%"></div><div class="chart-bar" style="height:70%"></div><div class="chart-bar" style="height:45%"></div><div class="chart-bar" style="height:75%"></div><div class="chart-bar" style="height:60%"></div><div class="chart-bar" style="height:85%"></div><div class="chart-bar" style="height:100%"></div><div class="chart-bar" style="height:72%"></div><div class="chart-bar" style="height:58%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Distribuição por Tipo</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">PIX</span><span style="font-size:12px;font-weight:600;">57,7%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:57.7%;height:100%;background:var(--green);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">TED</span><span style="font-size:12px;font-weight:600;">25,8%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:25.8%;height:100%;background:var(--gold);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Boleto</span><span style="font-size:12px;font-weight:600;">10,2%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:10.2%;height:100%;background:var(--info);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">P2P</span><span style="font-size:12px;font-weight:600;">6,3%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:6.3%;height:100%;background:var(--warning);border-radius:4px;"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header flex-between"><div class="card-title">Transações Recentes</div><button class="btn btn-ghost btn-sm" onclick="showScreen('transacoes-todas')">Ver todas →</button></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tipo</th><th>Fluxo</th><th>Valor</th><th>Conta</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">txn_8f2a...</code></td><td>PIX</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 1.250,00</td><td>João Silva</td><td>30/03/2026 14:32</td><td><span class="badge badge-success">Concluído</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_3c1b...</code></td><td>TED</td><td><span class="badge badge-error">Saída</span></td><td class="font-semibold">R$ 5.000,00</td><td>Maria Santos</td><td>30/03/2026 13:15</td><td><span class="badge badge-success">Concluído</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_9d4e...</code></td><td>PIX</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 320,00</td><td>Carlos Oliveira</td><td>30/03/2026 12:48</td><td><span class="badge badge-warning">Pendente</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_2a7f...</code></td><td>Boleto</td><td><span class="badge badge-error">Saída</span></td><td class="font-semibold">R$ 890,50</td><td>Ana Costa</td><td>30/03/2026 11:20</td><td><span class="badge badge-success">Concluído</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_5e8c...</code></td><td>P2P</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 150,00</td><td>Pedro Lima</td><td>30/03/2026 10:05</td><td><span class="badge badge-success">Concluído</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — CONTAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-contas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Usuários</div><div class="topbar-sub">Contas cadastradas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Total</div><div class="stat-box-value">5.103</div></div>
+        <div class="stat-box"><div class="stat-box-label">Ativas</div><div class="stat-box-value" style="color:var(--success)">4.821</div></div>
+        <div class="stat-box"><div class="stat-box-label">Pendentes</div><div class="stat-box-value" style="color:var(--warning)">187</div></div>
+        <div class="stat-box"><div class="stat-box-label">Bloqueadas</div><div class="stat-box-value" style="color:var(--error)">95</div></div>
+        <div class="stat-box"><div class="stat-box-label">PF</div><div class="stat-box-value">4.312</div></div>
+        <div class="stat-box"><div class="stat-box-label">PJ</div><div class="stat-box-value">791</div></div>
+      </div>
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por nome, CPF/CNPJ, e-mail ou ID...">
+        <select class="form-select" style="width:160px"><option>Todos os status</option><option>Aprovado</option><option>Pendente</option><option>Bloqueado</option></select>
+        <select class="form-select" style="width:120px"><option>Todos os tipos</option><option>PF</option><option>PJ</option></select>
+        <button class="btn btn-ghost btn-sm">⬇ Exportar CSV</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nome</th><th>CPF/CNPJ</th><th>Tipo</th><th>Ag / CC</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold" style="cursor:pointer;color:var(--green)" onclick="showScreen('usuarios-detalhes')">João da Silva Santos</td><td>123.456.789-00</td><td><span class="badge badge-info">PF</span></td><td>0001 / 12345-6</td><td><span class="badge badge-success">Aprovado</span></td><td>15/01/2026</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-detalhes')">Ver</button></td></tr>
+              <tr><td class="font-semibold" style="cursor:pointer;color:var(--green)" onclick="showScreen('usuarios-detalhes')">Maria Oliveira Costa</td><td>987.654.321-00</td><td><span class="badge badge-info">PF</span></td><td>0001 / 98765-4</td><td><span class="badge badge-warning">Pend. aprov. manual</span></td><td>22/02/2026</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-detalhes')">Ver</button></td></tr>
+              <tr><td class="font-semibold" style="cursor:pointer;color:var(--green)" onclick="showScreen('usuarios-detalhes')">Tech Solutions Ltda</td><td>12.345.678/0001-90</td><td><span class="badge badge-gold">PJ</span></td><td>0001 / 55432-1</td><td><span class="badge badge-success">Aprovado</span></td><td>10/03/2026</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-detalhes')">Ver</button></td></tr>
+              <tr><td class="font-semibold" style="cursor:pointer;color:var(--green)" onclick="showScreen('usuarios-detalhes')">Carlos Eduardo Lima</td><td>456.789.123-00</td><td><span class="badge badge-info">PF</span></td><td>—</td><td><span class="badge badge-error">Bloqueada</span></td><td>05/03/2026</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-detalhes')">Ver</button></td></tr>
+              <tr><td class="font-semibold" style="cursor:pointer;color:var(--green)" onclick="showScreen('usuarios-detalhes')">Florença Digital Ltda</td><td>29.566.278/0001-02</td><td><span class="badge badge-gold">PJ</span></td><td>0001 / 77890-3</td><td><span class="badge badge-success">Aprovado</span></td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-detalhes')">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:12px 20px;border-top:1px solid var(--gray-light);display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;color:var(--gray-mid)">Mostrando 1–25 de 5.103 contas</span>
+          <div class="pagination">
+            <button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">…</button><button class="page-btn">205</button><button class="page-btn">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — DETALHES (Cockpit 360°)
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-detalhes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Detalhes da Conta</div><div class="topbar-sub">Cockpit 360° do usuário</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-contas')">← Voltar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="breadcrumb"><span onclick="showScreen('usuarios-contas')" style="cursor:pointer;color:var(--green)">Usuários</span><span class="breadcrumb-sep">/</span><span class="breadcrumb-current">João da Silva Santos</span></div>
+      <div class="detail-header">
+        <div class="flex-between">
+          <div>
+            <div class="detail-name">João da Silva Santos</div>
+            <div class="detail-meta">
+              <span class="badge badge-info">PF</span>
+              <span class="badge badge-success">Aprovado</span>
+              <span class="detail-id">62ff7a51-7572-4920-a1eb-54ba66d1db25</span>
+              <span style="font-size:12px;color:var(--gray-mid)">Ag: 0001 / CC: 12345-6</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-heading)">R$ 8.420,50</div>
+            <div style="font-size:11px;color:var(--gray-mid)">Saldo disponível</div>
+          </div>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary btn-sm">✅ Aprovar</button>
+        <button class="btn btn-danger btn-sm">❌ Reprovar</button>
+        <button class="btn btn-ghost btn-sm">🔒 Bloquear</button>
+        <button class="btn btn-ghost btn-sm">🔓 Desbloquear</button>
+        <button class="btn btn-secondary btn-sm">🔄 Retry CoreBank</button>
+        <button class="btn btn-ghost btn-sm">🏦 Fix Ag/CC</button>
+        <button class="btn btn-ghost btn-sm">📝 Corrigir Razão Social</button>
+      </div>
+      <div class="tabs">
+        <div class="tab active">Informações</div>
+        <div class="tab">Transações</div>
+        <div class="tab">Usuários</div>
+        <div class="tab">Boleto</div>
+        <div class="tab">Alterar Dados</div>
+        <div class="tab">Depósitos</div>
+        <div class="tab">Subcontas</div>
+        <div class="tab">KYC / Assertiva</div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Dados Pessoais</div></div>
+          <div class="card-body">
+            <div class="info-row"><span class="info-label">Nome Completo</span><span class="info-value">João da Silva Santos</span></div>
+            <div class="info-row"><span class="info-label">CPF</span><span class="info-value">123.456.789-00</span></div>
+            <div class="info-row"><span class="info-label">E-mail</span><span class="info-value">joao@email.com</span></div>
+            <div class="info-row"><span class="info-label">Celular</span><span class="info-value">(11) 99999-8888</span></div>
+            <div class="info-row"><span class="info-label">Renda Mensal</span><span class="info-value">R$ 5.000,00</span></div>
+            <div class="info-row"><span class="info-label">Mãe</span><span class="info-value">Maria da Silva</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Dados Bancários (Matera)</div></div>
+          <div class="card-body">
+            <div class="info-row"><span class="info-label">CoreBank ID</span><span class="info-value" style="font-family:monospace;font-size:12px;">mat_acc_8f2a1b3c</span></div>
+            <div class="info-row"><span class="info-label">Agência</span><span class="info-value">0001</span></div>
+            <div class="info-row"><span class="info-label">Conta Corrente</span><span class="info-value">12345-6</span></div>
+            <div class="info-row"><span class="info-label">Saldo Disponível</span><span class="info-value text-success font-semibold">R$ 8.420,50</span></div>
+            <div class="info-row"><span class="info-label">Saldo Bloqueado</span><span class="info-value text-error">R$ 0,00</span></div>
+            <div class="info-row"><span class="info-label">Status CoreBank</span><span class="info-value"><span class="badge badge-success">ACTIVE</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — ADMINS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-admins">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Administradores</div><div class="topbar-sub">Gestão de acesso ao BackOffice</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Admin</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nome</th><th>E-mail</th><th>Papel</th><th>TOTP</th><th>Último Acesso</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Admin Principal</td><td>admin@monetizandoinvest.com</td><td><span class="badge badge-gold">Super Admin</span></td><td><span class="badge badge-success">Configurado</span></td><td>30/03/2026 14:30</td><td><button class="btn btn-ghost btn-sm">🔄 Resetar MFA</button></td></tr>
+              <tr><td class="font-semibold">Operador 1</td><td>op1@monetizandoinvest.com</td><td><span class="badge badge-info">Operador</span></td><td><span class="badge badge-success">Configurado</span></td><td>29/03/2026 09:15</td><td><button class="btn btn-ghost btn-sm">🔄 Resetar MFA</button></td></tr>
+              <tr><td class="font-semibold">Compliance</td><td>compliance@monetizandoinvest.com</td><td><span class="badge badge-muted">Visualizador</span></td><td><span class="badge badge-warning">Pendente</span></td><td>—</td><td><button class="btn btn-ghost btn-sm">🔄 Resetar MFA</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — PERMISSÕES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-permissoes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Permissões</div><div class="topbar-sub">Controle de acesso por seção</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Matriz de Permissões por Papel</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Seção</th><th>Super Admin</th><th>Operador</th><th>Visualizador</th><th>Compliance</th></tr></thead>
+            <tbody>
+              <tr><td>Dashboard</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+              <tr><td>Usuários / Contas</td><td>✅ R/W</td><td>✅ R/W</td><td>👁 Leitura</td><td>👁 Leitura</td></tr>
+              <tr><td>Transações</td><td>✅ R/W</td><td>✅ R/W</td><td>👁 Leitura</td><td>👁 Leitura</td></tr>
+              <tr><td>PIX</td><td>✅ R/W</td><td>✅ R/W</td><td>❌</td><td>👁 Leitura</td></tr>
+              <tr><td>Financeiro</td><td>✅ R/W</td><td>👁 Leitura</td><td>❌</td><td>👁 Leitura</td></tr>
+              <tr><td>Segurança</td><td>✅ R/W</td><td>❌</td><td>❌</td><td>👁 Leitura</td></tr>
+              <tr><td>Configurações</td><td>✅ R/W</td><td>❌</td><td>❌</td><td>❌</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — LOGS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-logs">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Logs de Acesso</div><div class="topbar-sub">Auditoria de acessos ao BackOffice</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por admin, IP ou ação...">
+        <input class="form-input" type="date" style="width:160px" value="2026-03-30">
+        <button class="btn btn-ghost btn-sm">⬇ Exportar</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Data/Hora</th><th>Admin</th><th>Ação</th><th>IP</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>30/03/2026 14:32</td><td>admin@monetizandoinvest.com</td><td>Aprovar conta #62ff7a51</td><td>187.45.123.89</td><td><span class="badge badge-success">Sucesso</span></td></tr>
+              <tr><td>30/03/2026 13:15</td><td>op1@monetizandoinvest.com</td><td>Login</td><td>200.12.45.67</td><td><span class="badge badge-success">Sucesso</span></td></tr>
+              <tr><td>30/03/2026 12:00</td><td>admin@monetizandoinvest.com</td><td>Bloquear conta #abc123</td><td>187.45.123.89</td><td><span class="badge badge-success">Sucesso</span></td></tr>
+              <tr><td>30/03/2026 11:30</td><td>unknown@test.com</td><td>Tentativa de login</td><td>45.33.12.100</td><td><span class="badge badge-error">Falha</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: USUÁRIOS — TRANSFERÊNCIA ENTRE CONTAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-usuarios-transferencia">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transferência entre Contas</div><div class="topbar-sub">Operação administrativa de P2P</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="alert alert-warning">⚠️ Esta operação é irreversível. Certifique-se dos dados antes de confirmar.</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Conta Origem</div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Buscar conta (nome, CPF ou ID)</label><input class="form-input" placeholder="João da Silva..." value="João da Silva Santos"></div>
+            <div style="background:var(--cream);border-radius:var(--radius);padding:12px;margin-top:8px;">
+              <div style="font-weight:600;font-size:13px;">João da Silva Santos</div>
+              <div style="font-size:12px;color:var(--gray-mid);">CPF: 123.456.789-00 · Ag: 0001 / CC: 12345-6</div>
+              <div style="font-size:14px;font-weight:700;color:var(--success);margin-top:4px;">Saldo: R$ 8.420,50</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Conta Destino</div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Buscar conta (nome, CPF ou ID)</label><input class="form-input" placeholder="Maria Santos..."></div>
+            <div style="background:var(--cream);border-radius:var(--radius);padding:12px;margin-top:8px;color:var(--gray-mid);font-size:12px;text-align:center;">Nenhuma conta selecionada</div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <div class="form-group"><label class="form-label">Valor (R$)</label><input class="form-input" placeholder="0,00" style="font-size:18px;font-weight:600;"></div>
+          <div class="form-group"><label class="form-label">Descrição / Motivo</label><input class="form-input" placeholder="Motivo da transferência administrativa..."></div>
+          <button class="btn btn-primary">Executar Transferência</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: EMPRESAS — CADASTROS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-empresas-cadastros">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Empresas</div><div class="topbar-sub">Cadastros PJ</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por razão social, CNPJ ou ID..."><select class="form-select" style="width:160px"><option>Todos os status</option><option>Aprovado</option><option>Pendente</option></select></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Razão Social</th><th>CNPJ</th><th>CNAE</th><th>Receita Anual</th><th>Status</th><th>Criado</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td>12.345.678/0001-90</td><td>6201-5/01</td><td>R$ 1,2M</td><td><span class="badge badge-success">Aprovado</span></td><td>10/03/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td class="font-semibold">Florença Digital Ltda</td><td>29.566.278/0001-02</td><td>6499-3/99</td><td>R$ 5,8M</td><td><span class="badge badge-success">Aprovado</span></td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td class="font-semibold">Bit Select ESC Ltda</td><td>29.566.278/0001-02</td><td>6493-4/00</td><td>R$ 2,1M</td><td><span class="badge badge-warning">Pend. KYC</span></td><td>20/03/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: EMPRESAS — DOCUMENTOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-empresas-documentos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Documentos</div><div class="topbar-sub">Documentação PJ enviada</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por empresa ou tipo de documento..."><select class="form-select" style="width:160px"><option>Todos os tipos</option><option>Contrato Social</option><option>CNPJ</option><option>Procuração</option></select></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Empresa</th><th>Tipo</th><th>Arquivo</th><th>Enviado em</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>Tech Solutions Ltda</td><td>Contrato Social</td><td>contrato_social.pdf</td><td>10/03/2026</td><td><span class="badge badge-success">Aprovado</span></td><td><button class="btn btn-ghost btn-sm">👁 Ver</button></td></tr>
+              <tr><td>Tech Solutions Ltda</td><td>Comprovante CNPJ</td><td>cnpj_cartao.pdf</td><td>10/03/2026</td><td><span class="badge badge-success">Aprovado</span></td><td><button class="btn btn-ghost btn-sm">👁 Ver</button></td></tr>
+              <tr><td>Bit Select ESC Ltda</td><td>Contrato Social</td><td>contrato_bitselect.pdf</td><td>20/03/2026</td><td><span class="badge badge-warning">Em análise</span></td><td><button class="btn btn-ghost btn-sm">👁 Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: EMPRESAS — COMPLIANCE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-empresas-compliance">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Compliance PJ</div><div class="topbar-sub">Análise de conformidade de empresas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Checklist de Compliance</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Empresa</th><th>KYC</th><th>PEP</th><th>Sanções</th><th>CERC</th><th>Score</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td><span class="badge badge-success">✅ OK</span></td><td><span class="badge badge-success">✅ OK</span></td><td><span class="badge badge-success">✅ OK</span></td><td><span class="badge badge-muted">N/A</span></td><td><span class="badge badge-success">850</span></td><td><span class="badge badge-success">Aprovado</span></td></tr>
+              <tr><td class="font-semibold">Bit Select ESC Ltda</td><td><span class="badge badge-warning">⏳ Pend.</span></td><td><span class="badge badge-success">✅ OK</span></td><td><span class="badge badge-success">✅ OK</span></td><td><span class="badge badge-warning">⏳ Pend.</span></td><td><span class="badge badge-warning">620</span></td><td><span class="badge badge-warning">Em análise</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: TRANSAÇÕES — TODAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-transacoes-todas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transações</div><div class="topbar-sub">Todas as transações</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por ID, conta, valor...">
+        <select class="form-select" style="width:130px"><option>Todos os tipos</option><option>PIX</option><option>TED</option><option>Boleto</option><option>P2P</option></select>
+        <select class="form-select" style="width:130px"><option>Todos os fluxos</option><option>Entrada</option><option>Saída</option></select>
+        <input class="form-input" type="date" style="width:140px" value="2026-03-01">
+        <input class="form-input" type="date" style="width:140px" value="2026-03-30">
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tipo</th><th>Fluxo</th><th>Valor</th><th>Origem</th><th>Destino</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">txn_8f2a</code></td><td>PIX</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 1.250,00</td><td>João Silva</td><td>Maria Santos</td><td>30/03 14:32</td><td><span class="badge badge-success">OK</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_3c1b</code></td><td>TED</td><td><span class="badge badge-error">Saída</span></td><td class="font-semibold">R$ 5.000,00</td><td>Maria Santos</td><td>Banco Externo</td><td>30/03 13:15</td><td><span class="badge badge-success">OK</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_9d4e</code></td><td>Boleto</td><td><span class="badge badge-error">Saída</span></td><td class="font-semibold">R$ 890,50</td><td>Ana Costa</td><td>—</td><td>30/03 12:48</td><td><span class="badge badge-warning">Pend.</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_2a7f</code></td><td>PIX</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 320,00</td><td>Carlos Lima</td><td>João Silva</td><td>30/03 11:20</td><td><span class="badge badge-success">OK</span></td></tr>
+              <tr><td><code style="font-size:11px;">txn_5e8c</code></td><td>P2P</td><td><span class="badge badge-success">Entrada</span></td><td class="font-semibold">R$ 150,00</td><td>Pedro Lima</td><td>João Silva</td><td>30/03 10:05</td><td><span class="badge badge-success">OK</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:12px 20px;border-top:1px solid var(--gray-light);display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;color:var(--gray-mid)">38.291 transações · Volume: R$ 12,4M</span>
+          <div class="pagination"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: TRANSAÇÕES — PIX
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-transacoes-pix">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transações PIX</div><div class="topbar-sub">Histórico de transações PIX</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Total PIX (30d)</div><div class="stat-box-value">22.104</div></div>
+        <div class="stat-box"><div class="stat-box-label">Volume PIX (30d)</div><div class="stat-box-value">R$ 8,1M</div></div>
+        <div class="stat-box"><div class="stat-box-label">Ticket Médio</div><div class="stat-box-value">R$ 366</div></div>
+        <div class="stat-box"><div class="stat-box-label">Devoluções</div><div class="stat-box-value" style="color:var(--error)">47</div></div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>End-to-End ID</th><th>Tipo Chave</th><th>Chave</th><th>Valor</th><th>Pagador</th><th>Recebedor</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:10px;">E9999901420260330...</code></td><td>CPF</td><td>123.456.789-00</td><td class="font-semibold">R$ 1.250,00</td><td>João Silva</td><td>Maria Santos</td><td>30/03 14:32</td><td><span class="badge badge-success">CONCLUÍDO</span></td></tr>
+              <tr><td><code style="font-size:10px;">E9999901420260330...</code></td><td>E-mail</td><td>pedro@email.com</td><td class="font-semibold">R$ 500,00</td><td>Carlos Lima</td><td>Pedro Alves</td><td>30/03 12:00</td><td><span class="badge badge-success">CONCLUÍDO</span></td></tr>
+              <tr><td><code style="font-size:10px;">E9999901420260330...</code></td><td>Aleatória</td><td>abc123-def456...</td><td class="font-semibold">R$ 75,00</td><td>Ana Costa</td><td>João Silva</td><td>30/03 10:45</td><td><span class="badge badge-warning">DEVOLVIDO</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: TRANSAÇÕES — TED
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-transacoes-ted">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transações TED</div><div class="topbar-sub">Transferências bancárias externas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Origem</th><th>Banco Destino</th><th>Ag/CC Destino</th><th>Valor</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">ted_3c1b</code></td><td>Maria Santos</td><td>Itaú (341)</td><td>1234 / 56789-0</td><td class="font-semibold">R$ 5.000,00</td><td>30/03 13:15</td><td><span class="badge badge-success">CONCLUÍDO</span></td></tr>
+              <tr><td><code style="font-size:11px;">ted_7a2e</code></td><td>Carlos Lima</td><td>Bradesco (237)</td><td>5678 / 12345-6</td><td class="font-semibold">R$ 2.300,00</td><td>29/03 16:00</td><td><span class="badge badge-success">CONCLUÍDO</span></td></tr>
+              <tr><td><code style="font-size:11px;">ted_9f4c</code></td><td>Ana Costa</td><td>Santander (033)</td><td>9012 / 34567-8</td><td class="font-semibold">R$ 800,00</td><td>29/03 14:30</td><td><span class="badge badge-error">FALHOU</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: TRANSAÇÕES — BOLETOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-transacoes-boletos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Boletos</div><div class="topbar-sub">Pagamentos e cobranças via boleto</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Linha Digitável</th><th>Tipo</th><th>Valor</th><th>Vencimento</th><th>Conta</th><th>Data Pag.</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:10px;">34191.09008 01234.567890...</code></td><td>Pagamento</td><td class="font-semibold">R$ 890,50</td><td>30/03/2026</td><td>Ana Costa</td><td>30/03 12:48</td><td><span class="badge badge-success">PAGO</span></td></tr>
+              <tr><td><code style="font-size:10px;">00190.00009 02345.678901...</code></td><td>Cobrança</td><td class="font-semibold">R$ 1.200,00</td><td>05/04/2026</td><td>João Silva</td><td>—</td><td><span class="badge badge-warning">AGUARDANDO</span></td></tr>
+              <tr><td><code style="font-size:10px;">75691.00001 00003.456789...</code></td><td>DARF</td><td class="font-semibold">R$ 450,00</td><td>31/03/2026</td><td>Tech Solutions</td><td>30/03 09:00</td><td><span class="badge badge-success">PAGO</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: TRANSAÇÕES — AGENDADAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-transacoes-agendadas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transações Agendadas</div><div class="topbar-sub">Pagamentos e transferências programadas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tipo</th><th>Valor</th><th>Origem</th><th>Destino</th><th>Data Agend.</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>PIX</td><td class="font-semibold">R$ 500,00</td><td>João Silva</td><td>Maria Santos</td><td>01/04/2026</td><td><span class="badge badge-info">AGENDADO</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td>TED</td><td class="font-semibold">R$ 2.000,00</td><td>Carlos Lima</td><td>Banco Externo</td><td>02/04/2026</td><td><span class="badge badge-info">AGENDADO</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td>Boleto</td><td class="font-semibold">R$ 350,00</td><td>Ana Costa</td><td>—</td><td>05/04/2026</td><td><span class="badge badge-info">AGENDADO</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — CHAVES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-chaves">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Chaves PIX</div><div class="topbar-sub">Gestão de chaves cadastradas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por chave, tipo ou conta..."><select class="form-select" style="width:150px"><option>Todos os tipos</option><option>CPF/CNPJ</option><option>E-mail</option><option>Celular</option><option>Aleatória</option></select></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Chave</th><th>Tipo</th><th>Conta</th><th>Cadastrada em</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>123.456.789-00</td><td><span class="badge badge-info">CPF</span></td><td>João da Silva Santos</td><td>15/01/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+              <tr><td>joao@email.com</td><td><span class="badge badge-gold">E-mail</span></td><td>João da Silva Santos</td><td>15/01/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+              <tr><td>(11) 99999-8888</td><td><span class="badge badge-muted">Celular</span></td><td>Maria Santos</td><td>22/02/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+              <tr><td>abc123-def456-ghi789...</td><td><span class="badge badge-muted">Aleatória</span></td><td>Carlos Lima</td><td>05/03/2026</td><td><span class="badge badge-warning">Portabilidade</span></td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — COBRANÇAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-cobrancas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Cobranças PIX</div><div class="topbar-sub">QR Codes de cobrança gerados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>TxID</th><th>Tipo</th><th>Valor</th><th>Conta</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">txid_abc123</code></td><td>Imediata</td><td class="font-semibold">R$ 250,00</td><td>João Silva</td><td>—</td><td><span class="badge badge-warning">Aguardando</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td><code style="font-size:11px;">txid_def456</code></td><td>Com Vencimento</td><td class="font-semibold">R$ 1.200,00</td><td>Tech Solutions</td><td>05/04/2026</td><td><span class="badge badge-success">Pago</span></td><td>—</td></tr>
+              <tr><td><code style="font-size:11px;">txid_ghi789</code></td><td>Imediata</td><td class="font-semibold">R$ 75,00</td><td>Maria Santos</td><td>—</td><td><span class="badge badge-error">Cancelada</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — DEVOLUÇÕES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-devolucoes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Devoluções PIX</div><div class="topbar-sub">Solicitações de devolução</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID Devolução</th><th>Transação Original</th><th>Valor</th><th>Tipo</th><th>Motivo</th><th>Data</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">dev_001</code></td><td><code style="font-size:11px;">txn_8f2a</code></td><td class="font-semibold">R$ 1.250,00</td><td>Total</td><td>Erro do pagador</td><td>28/03/2026</td><td><span class="badge badge-success">Devolvido</span></td></tr>
+              <tr><td><code style="font-size:11px;">dev_002</code></td><td><code style="font-size:11px;">txn_3c1b</code></td><td class="font-semibold">R$ 200,00</td><td>Parcial</td><td>Cobrança indevida</td><td>29/03/2026</td><td><span class="badge badge-warning">Processando</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — MED 2.0
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-med">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">MED 2.0</div><div class="topbar-sub">Mecanismo Especial de Devolução</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="alert alert-info">ℹ️ O MED permite contestar transações PIX suspeitas de fraude. Prazo: 80 dias. Valor mínimo: R$ 200,00.</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID MED</th><th>Transação</th><th>Valor</th><th>Situação</th><th>Conta</th><th>Criado em</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">med_001</code></td><td><code style="font-size:11px;">txn_9d4e</code></td><td class="font-semibold">R$ 890,50</td><td>Fraude</td><td>Ana Costa</td><td>25/03/2026</td><td><span class="badge badge-warning">Em análise</span></td></tr>
+              <tr><td><code style="font-size:11px;">med_002</code></td><td><code style="font-size:11px;">txn_2a7f</code></td><td class="font-semibold">R$ 320,00</td><td>Desacordo comercial</td><td>Carlos Lima</td><td>20/03/2026</td><td><span class="badge badge-success">Resolvido</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — RECORRÊNCIAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-recorrencias">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">PIX Automático</div><div class="topbar-sub">Recorrências e débitos automáticos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Conta</th><th>Recebedor</th><th>Valor</th><th>Periodicidade</th><th>Próximo Débito</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">rec_001</code></td><td>João Silva</td><td>Netflix</td><td class="font-semibold">R$ 39,90</td><td>Mensal</td><td>01/04/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td><code style="font-size:11px;">rec_002</code></td><td>Maria Santos</td><td>Spotify</td><td class="font-semibold">R$ 21,90</td><td>Mensal</td><td>05/04/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: PIX — PORTABILIDADE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-pix-portabilidade">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Portabilidade de Chaves</div><div class="topbar-sub">Solicitações de portabilidade e reivindicação</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="tabs"><div class="tab active">Portabilidade</div><div class="tab">Reivindicação (Ownership)</div></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Chave</th><th>Tipo</th><th>Conta Solicitante</th><th>Banco Origem</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>123.456.789-00</td><td>CPF</td><td>João Silva</td><td>Itaú</td><td>28/03/2026</td><td><span class="badge badge-warning">Aguardando resposta</span></td><td><button class="btn btn-ghost btn-sm">Aprovar</button><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: FINANCEIRO — INVESTIMENTOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-financeiro-investimentos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Investimentos</div><div class="topbar-sub">Operações de investimento por conta</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Operação</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Total Investido</div><div class="stat-box-value">R$ 4,2M</div></div>
+        <div class="stat-box"><div class="stat-box-label">Rendimento Médio</div><div class="stat-box-value text-success">+12,4% a.a.</div></div>
+        <div class="stat-box"><div class="stat-box-label">Operações Ativas</div><div class="stat-box-value">312</div></div>
+        <div class="stat-box"><div class="stat-box-label">Clientes Investidores</div><div class="stat-box-value">189</div></div>
+      </div>
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por CoreBank ID ou conta..."></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conta</th><th>Produto</th><th>Valor Aplicado</th><th>Rendimento</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>João Silva</td><td>CDB 110% CDI</td><td class="font-semibold">R$ 10.000,00</td><td class="text-success">+R$ 124,00</td><td>30/06/2026</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-ghost btn-sm">✏️</button><button class="btn btn-danger btn-sm">🗑</button></td></tr>
+              <tr><td>Tech Solutions</td><td>LCI 95% CDI</td><td class="font-semibold">R$ 50.000,00</td><td class="text-success">+R$ 580,00</td><td>31/12/2026</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-ghost btn-sm">✏️</button><button class="btn btn-danger btn-sm">🗑</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: FINANCEIRO — SALDOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-financeiro-saldos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Saldos</div><div class="topbar-sub">Posição de saldo por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Saldo Total Custodiado</div><div class="stat-box-value">R$ 38,4M</div></div>
+        <div class="stat-box"><div class="stat-box-label">Saldo Disponível</div><div class="stat-box-value text-success">R$ 35,1M</div></div>
+        <div class="stat-box"><div class="stat-box-label">Saldo Bloqueado</div><div class="stat-box-value text-error">R$ 3,3M</div></div>
+        <div class="stat-box"><div class="stat-box-label">Contas com Saldo</div><div class="stat-box-value">4.102</div></div>
+      </div>
+      <div class="search-bar"><input class="search-input" placeholder="Buscar conta..."><select class="form-select" style="width:160px"><option>Ordenar: Maior saldo</option><option>Menor saldo</option><option>Alfabético</option></select></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conta</th><th>CPF/CNPJ</th><th>Saldo Disponível</th><th>Saldo Bloqueado</th><th>Última Movimentação</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">João da Silva Santos</td><td>123.456.789-00</td><td class="text-success font-semibold">R$ 8.420,50</td><td>R$ 0,00</td><td>30/03/2026</td></tr>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td>12.345.678/0001-90</td><td class="text-success font-semibold">R$ 125.000,00</td><td>R$ 5.000,00</td><td>30/03/2026</td></tr>
+              <tr><td class="font-semibold">Maria Oliveira Costa</td><td>987.654.321-00</td><td class="text-success font-semibold">R$ 2.150,00</td><td>R$ 0,00</td><td>29/03/2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: FINANCEIRO — EXTRATOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-financeiro-extratos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Extratos</div><div class="topbar-sub">Extrato consolidado por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar CSV</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar conta...">
+        <input class="form-input" type="date" style="width:140px" value="2026-03-01">
+        <input class="form-input" type="date" style="width:140px" value="2026-03-30">
+        <select class="form-select" style="width:130px"><option>Todos</option><option>Crédito</option><option>Débito</option></select>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Data</th><th>Tipo</th><th>Fluxo</th><th>Descrição</th><th>Valor</th><th>Saldo Após</th></tr></thead>
+            <tbody>
+              <tr><td>30/03/2026 14:32</td><td>PIX</td><td><span class="badge badge-success">Crédito</span></td><td>Recebido de Maria Santos</td><td class="text-success font-semibold">+R$ 1.250,00</td><td>R$ 8.420,50</td></tr>
+              <tr><td>29/03/2026 10:00</td><td>TED</td><td><span class="badge badge-error">Débito</span></td><td>Transferência para Banco Externo</td><td class="text-error font-semibold">-R$ 2.000,00</td><td>R$ 7.170,50</td></tr>
+              <tr><td>28/03/2026 09:15</td><td>Boleto</td><td><span class="badge badge-error">Débito</span></td><td>Pagamento de boleto</td><td class="text-error font-semibold">-R$ 350,00</td><td>R$ 9.170,50</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: FINANCEIRO — LIMITES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-financeiro-limites">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Limites</div><div class="topbar-sub">Limites PIX e TED por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar conta..."></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conta</th><th>PIX Diurno</th><th>PIX Noturno</th><th>TED Diário</th><th>Favorecidos</th
+><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">João da Silva Santos</td><td>R$ 20.000,00</td><td>R$ 1.000,00</td><td>R$ 50.000,00</td><td>5</td><td><button class="btn btn-ghost btn-sm">✏️ Editar</button></td></tr>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td>R$ 100.000,00</td><td>R$ 10.000,00</td><td>R$ 500.000,00</td><td>20</td><td><button class="btn btn-ghost btn-sm">✏️ Editar</button></td></tr>
+              <tr><td class="font-semibold">Maria Oliveira Costa</td><td>R$ 10.000,00</td><td>R$ 500,00</td><td>R$ 20.000,00</td><td>3</td><td><button class="btn btn-ghost btn-sm">✏️ Editar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: FINANCEIRO — TARIFAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-financeiro-tarifas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Tarifas</div><div class="topbar-sub">Configuração de tarifas por produto</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Tarifa</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Tabela de Tarifas Vigentes</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Produto</th><th>Tipo</th><th>Valor</th><th>Segmento</th><th>Vigência</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>PIX</td><td>Por transação</td><td>R$ 0,00</td><td>PF</td><td>Permanente</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+              <tr><td>PIX</td><td>Por transação</td><td>R$ 0,50</td><td>PJ</td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+              <tr><td>TED</td><td>Por transação</td><td>R$ 8,00</td><td>PF</td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+              <tr><td>TED</td><td>Por transação</td><td>R$ 5,00</td><td>PJ</td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+              <tr><td>Boleto</td><td>Por emissão</td><td>R$ 3,50</td><td>Todos</td><td>01/01/2026</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+              <tr><td>Manutenção Conta</td><td>Mensal</td><td>R$ 0,00</td><td>PF</td><td>Permanente</td><td><button class="btn btn-ghost btn-sm">✏️</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: SEGURANÇA — CAUTELAR
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-seguranca-cautelar">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Bloqueio Cautelar</div><div class="topbar-sub">Contas bloqueadas por suspeita de fraude</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="alert alert-error">🛡️ Contas em bloqueio cautelar têm todas as transações suspensas até análise.</div>
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por conta, CPF/CNPJ ou ID..."></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conta</th><th>Motivo</th><th>Bloqueado por</th><th>Data Bloqueio</th><th>Saldo Bloqueado</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Carlos Eduardo Lima</td><td>Suspeita de fraude</td><td>Admin Principal</td><td>25/03/2026</td><td class="text-error font-semibold">R$ 3.200,00</td><td><span class="badge badge-error">Bloqueado</span></td><td><button class="btn btn-ghost btn-sm">🔓 Desbloquear</button><button class="btn btn-ghost btn-sm">📋 Ver histórico</button></td></tr>
+              <tr><td class="font-semibold">Conta Suspeita 2</td><td>MED recebido</td><td>Sistema</td><td>28/03/2026</td><td class="text-error font-semibold">R$ 890,50</td><td><span class="badge badge-error">Bloqueado</span></td><td><button class="btn btn-ghost btn-sm">🔓 Desbloquear</button><button class="btn btn-ghost btn-sm">📋 Ver histórico</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: SEGURANÇA — DISPOSITIVOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-seguranca-dispositivos">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Dispositivos</div><div class="topbar-sub">Gestão de dispositivos autorizados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por conta ou device ID..."></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conta</th><th>Device ID</th><th>Modelo</th><th>SO</th><th>Cadastrado em</th><th>Último Acesso</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>João Silva</td><td><code style="font-size:10px;">dev_abc123</code></td><td>iPhone 15 Pro</td><td>iOS 17.4</td><td>15/01/2026</td><td>30/03/2026</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-danger btn-sm">Revogar</button></td></tr>
+              <tr><td>Maria Santos</td><td><code style="font-size:10px;">dev_def456</code></td><td>Samsung S24</td><td>Android 14</td><td>22/02/2026</td><td>29/03/2026</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-danger btn-sm">Revogar</button></td></tr>
+              <tr><td>Carlos Lima</td><td><code style="font-size:10px;">dev_ghi789</code></td><td>Xiaomi 13</td><td>Android 13</td><td>05/03/2026</td><td>20/03/2026</td><td><span class="badge badge-warning">Suspeito</span></td><td><button class="btn btn-danger btn-sm">Revogar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: SEGURANÇA — AUDITORIA
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-seguranca-auditoria">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Auditoria</div><div class="topbar-sub">Trilha de auditoria completa do sistema</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por entidade, ação ou admin...">
+        <select class="form-select" style="width:150px"><option>Todas as ações</option><option>CREATE</option><option>UPDATE</option><option>DELETE</option><option>APPROVE</option><option>BLOCK</option></select>
+        <input class="form-input" type="date" style="width:140px" value="2026-03-30">
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Data/Hora</th><th>Admin</th><th>Ação</th><th>Entidade</th><th>ID</th><th>Antes</th><th>Depois</th></tr></thead>
+            <tbody>
+              <tr><td>30/03 14:32</td><td>admin@monetizandoinvest.com</td><td><span class="badge badge-success">APPROVE</span></td><td>Account</td><td><code style="font-size:10px;">62ff7a51</code></td><td><code style="font-size:10px;">status:17</code></td><td><code style="font-size:10px;">status:2</code></td></tr>
+              <tr><td>30/03 13:00</td><td>op1@monetizandoinvest.com</td><td><span class="badge badge-error">BLOCK</span></td><td>Account</td><td><code style="font-size:10px;">abc12345</code></td><td><code style="font-size:10px;">status:2</code></td><td><code style="font-size:10px;">status:4</code></td></tr>
+              <tr><td>29/03 16:45</td><td>admin@monetizandoinvest.com</td><td><span class="badge badge-info">UPDATE</span></td><td>Limit</td><td><code style="font-size:10px;">lim_001</code></td><td><code style="font-size:10px;">pix:10000</code></td><td><code style="font-size:10px;">pix:20000</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: RELATÓRIOS — OPERACIONAL
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-relatorios-operacional">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Relatório Operacional</div><div class="topbar-sub">Indicadores operacionais do período</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="form-input" type="date" style="width:140px" value="2026-03-01">
+        <input class="form-input" type="date" style="width:140px" value="2026-03-30">
+        <button class="btn btn-primary btn-sm">Gerar Relatório</button>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-icon green">📊</div><div class="kpi-label">Novas Contas</div><div class="kpi-value">412</div><div class="kpi-detail">Março 2026</div></div>
+        <div class="kpi-card"><div class="kpi-icon gold">✅</div><div class="kpi-label">Contas Aprovadas</div><div class="kpi-value">387</div><div class="kpi-detail">94% taxa de aprovação</div></div>
+        <div class="kpi-card"><div class="kpi-icon blue">❌</div><div class="kpi-label">Contas Reprovadas</div><div class="kpi-value">25</div><div class="kpi-detail">6% taxa de reprovação</div></div>
+        <div class="kpi-card"><div class="kpi-icon red">⏱</div><div class="kpi-label">Tempo Médio Aprovação</div><div class="kpi-value">4,2h</div><div class="kpi-detail">Meta: 6h</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Novas Contas por Dia</div></div>
+        <div class="card-body">
+          <div class="chart-placeholder">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height:60%"></div><div class="chart-bar" style="height:80%"></div><div class="chart-bar" style="height:45%"></div><div class="chart-bar" style="height:70%"></div><div class="chart-bar" style="height:55%"></div><div class="chart-bar" style="height:90%"></div><div class="chart-bar" style="height:65%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: RELATÓRIOS — FINANCEIRO
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-relatorios-financeiro">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Relatório Financeiro</div><div class="topbar-sub">Receitas, despesas e volume transacionado</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-icon green">💰</div><div class="kpi-label">Receita Tarifas</div><div class="kpi-value">R$ 48.320</div><div class="kpi-detail">Março 2026</div></div>
+        <div class="kpi-card"><div class="kpi-icon gold">↔️</div><div class="kpi-label">Volume Transacionado</div><div class="kpi-value">R$ 12,4M</div><div class="kpi-detail">38.291 transações</div></div>
+        <div class="kpi-card"><div class="kpi-icon blue">📈</div><div class="kpi-label">Ticket Médio PIX</div><div class="kpi-value">R$ 366</div><div class="kpi-detail">22.104 transações</div></div>
+        <div class="kpi-card"><div class="kpi-icon red">🏦</div><div class="kpi-label">Investimentos Ativos</div><div class="kpi-value">R$ 4,2M</div><div class="kpi-detail">312 operações</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Receita por Produto</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">TED (R$ 8/tx)</span><span style="font-size:12px;font-weight:600;">R$ 14.776</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:30%;height:100%;background:var(--green);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Boleto (R$ 3,50/tx)</span><span style="font-size:12px;font-weight:600;">R$ 12.250</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:25%;height:100%;background:var(--gold);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">PIX PJ (R$ 0,50/tx)</span><span style="font-size:12px;font-weight:600;">R$ 8.200</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:17%;height:100%;background:var(--info);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Outros</span><span style="font-size:12px;font-weight:600;">R$ 13.094</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:27%;height:100%;background:var(--warning);border-radius:4px;"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Volume por Mês</div></div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="chart-bars">
+                <div class="chart-bar" style="height:55%"></div><div class="chart-bar" style="height:70%"></div><div class="chart-bar" style="height:100%"></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-around;font-size:11px;color:var(--gray-mid);margin-top:8px;"><span>Jan</span><span>Fev</span><span>Mar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: RELATÓRIOS — COMPLIANCE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-relatorios-compliance">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Relatório de Compliance</div><div class="topbar-sub">COAF, KYC e PLD/FT</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="alert alert-warning">⚠️ Relatórios de compliance são confidenciais. Acesso restrito a usuários autorizados.</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Alertas COAF</div><div class="stat-box-value text-error">3</div></div>
+        <div class="stat-box"><div class="stat-box-label">Clientes PEP</div><div class="stat-box-value text-warning">12</div></div>
+        <div class="stat-box"><div class="stat-box-label">Transações Suspeitas</div><div class="stat-box-value text-error">7</div></div>
+        <div class="stat-box"><div class="stat-box-label">KYC Pendente</div><div class="stat-box-value text-warning">45</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Alertas de Compliance</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tipo</th><th>Conta</th><th>Valor</th><th>Data</th><th>Prioridade</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>COAF</td><td>Carlos Eduardo Lima</td><td>R$ 50.000,00</td><td>25/03/2026</td><td><span class="badge badge-error">Alta</span></td><td><span class="badge badge-warning">Em análise</span></td></tr>
+              <tr><td>Transação Suspeita</td><td>Conta Anônima</td><td>R$ 15.000,00</td><td>28/03/2026</td><td><span class="badge badge-warning">Média</span></td><td><span class="badge badge-warning">Em análise</span></td></tr>
+              <tr><td>PEP</td><td>João da Silva Santos</td><td>—</td><td>15/01/2026</td><td><span class="badge badge-info">Baixa</span></td><td><span class="badge badge-success">Monitorado</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — DASHBOARD
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-dashboard">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Asaas</div><div class="topbar-sub">Dashboard de cobranças e pagamentos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-icon green">💳</div><div class="kpi-label">Cobranças Ativas</div><div class="kpi-value">1.284</div><div class="kpi-detail">R$ 892.400,00</div></div>
+        <div class="kpi-card"><div class="kpi-icon gold">✅</div><div class="kpi-label">Recebido (30d)</div><div class="kpi-value">R$ 234K</div><div class="kpi-detail">847 cobranças</div></div>
+        <div class="kpi-card"><div class="kpi-icon blue">⏳</div><div class="kpi-label">Aguardando</div><div class="kpi-value">437</div><div class="kpi-detail">R$ 658.400,00</div></div>
+        <div class="kpi-card"><div class="kpi-icon red">❌</div><div class="kpi-label">Vencidas</div><div class="kpi-value">89</div><div class="kpi-detail">R$ 45.200,00</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Cobranças por Status</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Pago</span><span style="font-size:12px;font-weight:600;">65,9%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:65.9%;height:100%;background:var(--success);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Aguardando</span><span style="font-size:12px;font-weight:600;">34,1%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:34.1%;height:100%;background:var(--warning);border-radius:4px;"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Assinaturas Ativas</div></div>
+          <div class="card-body">
+            <div style="font-size:32px;font-weight:700;color:var(--green);font-family:var(--font-heading);">312</div>
+            <div style="font-size:12px;color:var(--gray-mid);margin-top:4px;">Receita recorrente: R$ 48.320/mês</div>
+            <div style="margin-top:12px;"><button class="btn btn-ghost btn-sm" onclick="showScreen('asaas-assinaturas')">Ver assinaturas →</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — CLIENTES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-clientes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Clientes Asaas</div><div class="topbar-sub">Clientes cadastrados na plataforma Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Cliente</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar"><input class="search-input" placeholder="Buscar por nome, CPF/CNPJ ou e-mail..."></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nome</th><th>CPF/CNPJ</th><th>E-mail</th><th>Cobranças</th><th>Assinaturas</th><th>Cadastrado</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">João da Silva Santos</td><td>123.456.789-00</td><td>joao@email.com</td><td>12</td><td>2</td><td>15/01/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td>12.345.678/0001-90</td><td>fin@techsolutions.com</td><td>45</td><td>5</td><td>10/03/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td class="font-semibold">Maria Oliveira Costa</td><td>987.654.321-00</td><td>maria@email.com</td><td>3</td><td>1</td><td>22/02/2026</td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — COBRANÇAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-cobrancas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Cobranças Asaas</div><div class="topbar-sub">Cobranças geradas via Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Cobrança</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por ID, cliente ou valor...">
+        <select class="form-select" style="width:150px"><option>Todos os status</option><option>Pago</option><option>Aguardando</option><option>Vencido</option><option>Cancelado</option></select>
+        <select class="form-select" style="width:130px"><option>Todos os tipos</option><option>Boleto</option><option>PIX</option><option>Cartão</option></select>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Valor</th><th>Vencimento</th><th>Pago em</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">pay_abc123</code></td><td>João Silva</td><td>Boleto</td><td class="font-semibold">R$ 1.200,00</td><td>05/04/2026</td><td>—</td><td><span class="badge badge-warning">Aguardando</span></td></tr>
+              <tr><td><code style="font-size:11px;">pay_def456</code></td><td>Tech Solutions</td><td>PIX</td><td class="font-semibold">R$ 5.000,00</td><td>30/03/2026</td><td>30/03/2026</td><td><span class="badge badge-success">Pago</span></td></tr>
+              <tr><td><code style="font-size:11px;">pay_ghi789</code></td><td>Maria Santos</td><td>Boleto</td><td class="font-semibold">R$ 350,00</td><td>15/03/2026</td><td>—</td><td><span class="badge badge-error">Vencido</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — ASSINATURAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-assinaturas">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Assinaturas Asaas</div><div class="topbar-sub">Planos de cobrança recorrente</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Assinatura</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Cliente</th><th>Plano</th><th>Valor</th><th>Ciclo</th><th>Próxima Cobrança</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">sub_001</code></td><td>João Silva</td><td>Conta Premium</td><td class="font-semibold">R$ 29,90/mês</td><td>Mensal</td><td>01/04/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td><code style="font-size:11px;">sub_002</code></td><td>Tech Solutions</td><td>Conta Empresarial</td><td class="font-semibold">R$ 149,90/mês</td><td>Mensal</td><td>01/04/2026</td><td><span class="badge badge-success">Ativa</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+              <tr><td><code style="font-size:11px;">sub_003</code></td><td>Maria Santos</td><td>Conta Básica</td><td class="font-semibold">R$ 9,90/mês</td><td>Mensal</td><td>05/04/2026</td><td><span class="badge badge-warning">Inadimplente</span></td><td><button class="btn btn-danger btn-sm">Cancelar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — TRANSFERÊNCIAS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-transferencias">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Transferências Asaas</div><div class="topbar-sub">Transferências para conta bancária</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Valor</th><th>Banco Destino</th><th>Data Solicitação</th><th>Data Crédito</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">trf_001</code></td><td class="font-semibold">R$ 10.000,00</td><td>Itaú (341)</td><td>28/03/2026</td><td>29/03/2026</td><td><span class="badge badge-success">Concluído</span></td></tr>
+              <tr><td><code style="font-size:11px;">trf_002</code></td><td class="font-semibold">R$ 5.000,00</td><td>Bradesco (237)</td><td>30/03/2026</td><td>—</td><td><span class="badge badge-warning">Processando</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — EXTRATO
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-extrato">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Extrato Asaas</div><div class="topbar-sub">Movimentação da conta Asaas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-box-label">Saldo Disponível</div><div class="stat-box-value text-success">R$ 48.320,00</div></div>
+        <div class="stat-box"><div class="stat-box-label">Saldo Bloqueado</div><div class="stat-box-value text-error">R$ 5.000,00</div></div>
+        <div class="stat-box"><div class="stat-box-label">Saldo Total</div><div class="stat-box-value">R$ 53.320,00</div></div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th>Saldo</th></tr></thead>
+            <tbody>
+              <tr><td>30/03/2026</td><td>Recebimento cobrança pay_def456</td><td><span class="badge badge-success">Crédito</span></td><td class="text-success font-semibold">+R$ 5.000,00</td><td>R$ 48.320,00</td></tr>
+              <tr><td>29/03/2026</td><td>Transferência para Itaú</td><td><span class="badge badge-error">Débito</span></td><td class="text-error font-semibold">-R$ 10.000,00</td><td>R$ 43.320,00</td></tr>
+              <tr><td>28/03/2026</td><td>Recebimento cobrança pay_xyz</td><td><span class="badge badge-success">Crédito</span></td><td class="text-success font-semibold">+R$ 1.200,00</td><td>R$ 53.320,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: ASAAS — PIX
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-asaas-pix">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Chaves PIX Asaas</div><div class="topbar-sub">Chaves PIX da conta Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Adicionar Chave</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Chave</th><th>Tipo</th><th>Status</th><th>Cadastrada em</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td>financeiro@monetizandoinvest.com</td><td><span class="badge badge-gold">E-mail</span></td><td><span class="badge badge-success">Ativa</span></td><td>01/01/2026</td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+              <tr><td>29.566.278/0001-02</td><td><span class="badge badge-info">CNPJ</span></td><td><span class="badge badge-success">Ativa</span></td><td>01/01/2026</td><td><button class="btn btn-danger btn-sm">Excluir</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — DASHBOARD
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-dashboard">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Crédito (ESC)</div><div class="topbar-sub">Dashboard de Empresa Simples de Crédito</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-icon green">🏦</div><div class="kpi-label">Carteira Ativa</div><div class="kpi-value">R$ 2,1M</div><div class="kpi-detail">47 operações</div></div>
+        <div class="kpi-card"><div class="kpi-icon gold">📊</div><div class="kpi-label">Taxa Média</div><div class="kpi-value">2,8% a.m.</div><div class="kpi-detail">Spread: 1,2%</div></div>
+        <div class="kpi-card"><div class="kpi-icon blue">✅</div><div class="kpi-label">Operações Aprovadas</div><div class="kpi-value">38</div><div class="kpi-detail">Março 2026</div></div>
+        <div class="kpi-card"><div class="kpi-icon red">⚠️</div><div class="kpi-label">Inadimplência</div><div class="kpi-value">1,4%</div><div class="kpi-detail">R$ 29.400,00</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Operações por Status</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Em dia</span><span style="font-size:12px;font-weight:600;">86%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:86%;height:100%;background:var(--success);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Atraso 1-30d</span><span style="font-size:12px;font-weight:600;">8%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:8%;height:100%;background:var(--warning);border-radius:4px;"></div></div></div>
+              <div><div class="flex-between mb-1"><span style="font-size:12px;">Inadimplente</span><span style="font-size:12px;font-weight:600;">6%</span></div><div style="height:8px;background:var(--gray-light);border-radius:4px;"><div style="width:6%;height:100%;background:var(--error);border-radius:4px;"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Novas Operações (30d)</div></div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="chart-bars">
+                <div class="chart-bar" style="height:50%"></div><div class="chart-bar" style="height:70%"></div><div class="chart-bar" style="height:45%"></div><div class="chart-bar" style="height:90%"></div><div class="chart-bar" style="height:65%"></div><div class="chart-bar" style="height:80%"></div><div class="chart-bar" style="height:55%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — OPERAÇÕES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-operacoes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Operações de Crédito</div><div class="topbar-sub">Empréstimos e antecipações</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Operação</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Buscar por ID, cedente ou sacado...">
+        <select class="form-select" style="width:150px"><option>Todos os status</option><option>Em análise</option><option>Aprovado</option><option>Em dia</option><option>Inadimplente</option></select>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Cedente</th><th>Sacado</th><th>Valor</th><th>Taxa</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">op_001</code></td><td>Tech Solutions</td><td>Florença Digital</td><td class="font-semibold">R$ 50.000,00</td><td>2,5% a.m.</td><td>30/06/2026</td><td><span class="badge badge-success">Em dia</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td><code style="font-size:11px;">op_002</code></td><td>Bit Select ESC</td><td>João Silva</td><td class="font-semibold">R$ 15.000,00</td><td>3,2% a.m.</td><td>30/04/2026</td><td><span class="badge badge-warning">Em análise</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td><code style="font-size:11px;">op_003</code></td><td>Maria Santos</td><td>Carlos Lima</td><td class="font-semibold">R$ 8.000,00</td><td>2,8% a.m.</td><td>15/04/2026</td><td><span class="badge badge-error">Inadimplente</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — CEDENTES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-cedentes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Cedentes</div><div class="topbar-sub">Empresas cedentes de crédito</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Cedente</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Razão Social</th><th>CNPJ</th><th>Limite Aprovado</th><th>Utilizado</th><th>Disponível</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Tech Solutions Ltda</td><td>12.345.678/0001-90</td><td>R$ 200.000,00</td><td class="text-warning">R$ 50.000,00</td><td class="text-success">R$ 150.000,00</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+              <tr><td class="font-semibold">Bit Select ESC Ltda</td><td>29.566.278/0001-02</td><td>R$ 500.000,00</td><td class="text-warning">R$ 120.000,00</td><td class="text-success">R$ 380.000,00</td><td><span class="badge badge-success">Ativo</span></td><td><button class="btn btn-ghost btn-sm">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — SACADOS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-sacados">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Sacados</div><div class="topbar-sub">Devedores das operações de crédito</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nome</th><th>CPF/CNPJ</th><th>Operações</th><th>Total Devido</th><th>Em atraso</th><th>Score</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Florença Digital Ltda</td><td>29.566.278/0001-02</td><td>1</td><td class="font-semibold">R$ 50.000,00</td><td>R$ 0,00</td><td><span class="badge badge-success">850</span></td><td><span class="badge badge-success">Em dia</span></td></tr>
+              <tr><td class="font-semibold">Carlos Eduardo Lima</td><td>456.789.123-00</td><td>1</td><td class="font-semibold">R$ 8.000,00</td><td class="text-error">R$ 8.000,00</td><td><span class="badge badge-error">320</span></td><td><span class="badge badge-error">Inadimplente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — CALCULADORA
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-calculadora">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Calculadora de Crédito</div><div class="topbar-sub">Simulação de operações ESC</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Parâmetros da Operação</div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Valor do Crédito (R$)</label><input class="form-input" type="number" placeholder="0,00" value="50000"></div>
+            <div class="form-group"><label class="form-label">Taxa de Juros (% a.m.)</label><input class="form-input" type="number" placeholder="0,00" value="2.5"></div>
+            <div class="form-group"><label class="form-label">Prazo (meses)</label><input class="form-input" type="number" placeholder="0" value="12"></div>
+            <div class="form-group"><label class="form-label">Tipo de Amortização</label><select class="form-select"><option>Price (parcelas fixas)</option><option>SAC (amortização constante)</option></select></div>
+            <button class="btn btn-primary" style="width:100%">Calcular</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Resultado da Simulação</div></div>
+          <div class="card-body">
+            <div class="info-row"><span class="info-label">Valor Financiado</span><span class="info-value font-semibold">R$ 50.000,00</span></div>
+            <div class="info-row"><span class="info-label">Parcela Mensal</span><span class="info-value font-semibold text-green">R$ 4.716,04</span></div>
+            <div class="info-row"><span class="info-label">Total de Juros</span><span class="info-value text-error">R$ 6.592,48</span></div>
+            <div class="info-row"><span class="info-label">Total a Pagar</span><span class="info-value font-bold">R$ 56.592,48</span></div>
+            <div class="info-row"><span class="info-label">CET (a.a.)</span><span class="info-value">34,49%</span></div>
+            <div class="info-row"><span class="info-label">IOF</span><span class="info-value">R$ 1.850,00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CRÉDITO — REGISTROS CERC/B3
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-credito-registros">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Registros CERC / B3</div><div class="topbar-sub">Garantias e recebíveis registrados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="tabs"><div class="tab active">CERC</div><div class="tab">B3</div></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID Registro</th><th>Cedente</th><th>Tipo</th><th>Valor</th><th>Vencimento</th><th>Status CERC</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:11px;">cerc_001</code></td><td>Tech Solutions</td><td>Recebível Cartão</td><td class="font-semibold">R$ 50.000,00</td><td>30/06/2026</td><td><span class="badge badge-success">Registrado</span></td></tr>
+              <tr><td><code style="font-size:11px;">cerc_002</code></td><td>Bit Select ESC</td><td>Duplicata</td><td class="font-semibold">R$ 120.000,00</td><td>31/05/2026</td><td><span class="badge badge-warning">Aguardando</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CONFIGURAÇÕES — GERAL
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-configuracoes-geral">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Configurações</div><div class="topbar-sub">Configurações gerais do sistema</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Informações da Instituição</div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Nome da Instituição</label><input class="form-input" value="Monetizando Invest"></div>
+            <div class="form-group"><label class="form-label">CNPJ</label><input class="form-input" value="29.566.278/0001-02"></div>
+            <div class="form-group"><label class="form-label">ISPB (Banco)</label><input class="form-input" value="99999014"></div>
+            <div class="form-group"><label class="form-label">Ambiente</label><select class="form-select"><option>Produção</option><option>Sandbox</option></select></div>
+            <button class="btn btn-primary">Salvar Alterações</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Parâmetros do Sistema</div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Timeout de Sessão (min)</label><input class="form-input" type="number" value="30"></div>
+            <div class="form-group"><label class="form-label">Tentativas de Login</label><input class="form-input" type="number" value="5"></div>
+            <div class="form-group"><label class="form-label">Modo de Manutenção</label>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                <div style="width:40px;height:22px;background:var(--gray-light);border-radius:11px;position:relative;cursor:pointer;"><div style="width:18px;height:18px;background:var(--white);border-radius:9px;position:absolute;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div>
+                <span style="font-size:12px;color:var(--gray-mid)">Desativado</span>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Versão do Sistema</label><input class="form-input" value="v2.4.1" readonly style="background:var(--cream)"></div>
+            <button class="btn btn-primary">Salvar Parâmetros</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CONFIGURAÇÕES — NOTIFICAÇÕES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-configuracoes-notificacoes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Notificações</div><div class="topbar-sub">Configuração de alertas e notificações</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Alertas por E-mail</div></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="flex-between"><div><div style="font-size:13px;font-weight:500;">Nova conta aprovada</div><div style="font-size:12px;color:var(--gray-mid)">Notificar quando uma conta for aprovada</div></div><div style="width:40px;height:22px;background:var(--green);border-radius:11px;position:relative;cursor:pointer;"><div style="width:18px;height:18px;background:var(--white);border-radius:9px;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div></div>
+            <div class="flex-between"><div><div style="font-size:13px;font-weight:500;">Alerta de fraude</div><div style="font-size:12px;color:var(--gray-mid)">Notificar quando uma transação suspeita for detectada</div></div><div style="width:40px;height:22px;background:var(--green);border-radius:11px;position:relative;cursor:pointer;"><div style="width:18px;height:18px;background:var(--white);border-radius:9px;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div></div>
+            <div class="flex-between"><div><div style="font-size:13px;font-weight:500;">Relatório diário</div><div style="font-size:12px;color:var(--gray-mid)">Enviar resumo operacional às 08h</div></div><div style="width:40px;height:22px;background:var(--green);border-radius:11px;position:relative;cursor:pointer;"><div style="width:18px;height:18px;background:var(--white);border-radius:9px;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div></div>
+            <div class="flex-between"><div><div style="font-size:13px;font-weight:500;">Falha de integração</div><div style="font-size:12px;color:var(--gray-mid)">Notificar quando uma API externa falhar</div></div><div style="width:40px;height:22px;background:var(--gray-light);border-radius:11px;position:relative;cursor:pointer;"><div style="width:18px;height:18px;background:var(--white);border-radius:9px;position:absolute;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN: CONFIGURAÇÕES — INTEGRAÇÕES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-configuracoes-integracoes">
+  <div class="main">
+    <div class="topbar"><div><div class="topbar-title">Integrações</div><div class="topbar-sub">APIs e serviços externos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Status das Integrações</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Serviço</th><th>Tipo</th><th>Ambiente</th><th>Último Ping</th><th>Latência</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">Matera CoreBank</td><td>REST API</td><td>Produção</td><td>30/03 14:59</td><td>142ms</td><td><span class="badge badge-success">● Online</span></td></tr>
+              <tr><td class="font-semibold">Asaas</td><td>REST API</td><td>Produção</td><td>30/03 14:58</td><td>89ms</td><td><span class="badge badge-success">● Online</span></td></tr>
+              <tr><td class="font-semibold">Keycloak</td><td>OAuth2</td><td>Produção</td><td>30/03 14:59</td><td>45ms</td><td><span class="badge badge-success">● Online</span></td></tr>
+              <tr><td class="font-semibold">CERC</td><td>REST API</td><td>Produção</td><td>30/03 14:55</td><td>320ms</td><td><span class="badge badge-warning">⚠ Lento</span></td></tr>
+              <tr><td class="font-semibold">Assertiva KYC</td><td>REST API</td><td>Produção</td><td>30/03 14:50</td><td>—</td><td><span class="badge badge-error">● Offline</span></td></tr>
+              <tr><td class="font-semibold">AWS Secrets Manager</td><td>SDK</td><td>sa-east-1</td><td>30/03 14:59</td><td>12ms</td><td><span class="badge badge-success">● Online</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     FLOATING LABEL
+══════════════════════════════════════════════════════ -->
+<div class="wf-label" id="wfLabel">BackOffice Wireframe</div>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+let currentScreen = null;
+const sidebarTemplate = document.getElementById('sidebarTemplate');
+
+function injectSidebar(screenEl) {
+  const existing = screenEl.querySelector('.sidebar');
+  if (existing) return;
+  const clone = sidebarTemplate.content.cloneNode(true);
+  screenEl.insertBefore(clone, screenEl.firstChild);
+}
+
+function showScreen(id) {
+  // Hide index
+  document.getElementById('screenIndex').classList.add('hidden');
+
+  // Hide all screens
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  // Show target
+  const target = document.getElementById('screen-' + id);
+  if (!target) { console.warn('Screen not found:', id); return; }
+
+  // Inject sidebar if not login screen
+  if (!target.classList.contains('screen-login')) {
+    injectSidebar(target);
+    // Update active nav items
+    setTimeout(() => {
+      target.querySelectorAll('[data-screen]').forEach(el => {
+        el.classList.toggle('active', el.dataset.screen === id);
+      });
+    }, 10);
+  }
+
+  target.classList.add('active');
+  currentScreen = id;
+
+  // Update label
+  const titles = {
+    'login': 'Login',
+    'login-totp': 'TOTP Setup',
+    'login-totp-validate': 'TOTP Validate',
+    'dashboard': 'Dashboard',
+    'usuarios-contas': 'Usuários › Contas',
+    'usuarios-detalhes': 'Usuários › Detalhes',
+    'usuarios-admins': 'Usuários › Admins',
+    'usuarios-permissoes': 'Usuários › Permissões',
+    'usuarios-logs': 'Usuários › Logs',
+    'usuarios-transferencia': 'Usuários › Transferência',
+    'empresas-cadastros': 'Empresas › Cadastros',
+    'empresas-documentos': 'Empresas › Documentos',
+    'empresas-compliance': 'Empresas › Compliance',
+    'transacoes-todas': 'Transações › Todas',
+    'transacoes-pix': 'Transações › PIX',
+    'transacoes-ted': 'Transações › TED',
+    'transacoes-boletos': 'Transações › Boletos',
+    'transacoes-agendadas': 'Transações › Agendadas',
+    'pix-chaves': 'PIX › Chaves',
+    'pix-cobrancas': 'PIX › Cobranças',
+    'pix-devolucoes': 'PIX › Devoluções',
+    'pix-med': 'PIX › MED 2.0',
+    'pix-recorrencias': 'PIX › Recorrências',
+    'pix-portabilidade': 'PIX › Portabilidade',
+    'financeiro-investimentos': 'Financeiro › Investimentos',
+    'financeiro-saldos': 'Financeiro › Saldos',
+    'financeiro-extratos': 'Financeiro › Extratos',
+    'financeiro-limites': 'Financeiro › Limites',
+    'financeiro-tarifas': 'Financeiro › Tarifas',
+    'seguranca-cautelar': 'Segurança › Cautelar',
+    'seguranca-dispositivos': 'Segurança › Dispositivos',
+    'seguranca-auditoria': 'Segurança › Auditoria',
+    'relatorios-operacional': 'Relatórios › Operacional',
+    'relatorios-financeiro': 'Relatórios › Financeiro',
+    'relatorios-compliance': 'Relatórios › Compliance',
+    'asaas-dashboard': 'Asaas › Dashboard',
+    'asaas-clientes': 'Asaas › Clientes',
+    'asaas-cobrancas': 'Asaas › Cobranças',
+    'asaas-assinaturas': 'Asaas › Assinaturas',
+    'asaas-transferencias': 'Asaas › Transferências',
+    'asaas-extrato': 'Asaas › Extrato',
+    'asaas-pix': 'Asaas › PIX',
+    'credito-dashboard': 'Crédito › Dashboard',
+    'credito-operacoes': 'Crédito › Operações',
+    'credito-cedentes': 'Crédito › Cedentes',
+    'credito-sacados': 'Crédito › Sacados',
+    'credito-calculadora': 'Crédito › Calculadora',
+    'credito-registros': 'Crédito › Registros',
+    'configuracoes-geral': 'Config › Geral',
+    'configuracoes-notificacoes': 'Config › Notificações',
+    'configuracoes-integracoes': 'Config › Integrações',
+  };
+  document.getElementById('wfLabel').textContent = titles[id] || id;
+}
+
+function showIndex() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screenIndex').classList.remove('hidden');
+}
+
+function hideIndex() {
+  showScreen('login');
+}
+
+function toggleSection(header) {
+  header.classList.toggle('open');
+  const children = header.nextElementSibling;
+  if (children) children.classList.toggle('open');
+}
+
+// Start at index
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('screenIndex').classList.remove('hidden');
+});
+</script>
+</body>
+</html>
