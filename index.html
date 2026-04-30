@@ -664,7 +664,7 @@ tbody tr:last-child td { border-bottom: none; }
 <!-- ══════════════════════════════════════════════════════
      SCREEN: DASHBOARD
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-dashboard">
+<template id="tpl-screen-dashboard">
   <div class="main">
     <div class="topbar">
       <div><div class="topbar-title">Dashboard</div><div class="topbar-sub">Visão geral do sistema</div></div>
@@ -720,12 +720,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — CONTAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-contas">
+<template id="tpl-screen-usuarios-contas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Usuários</div><div class="topbar-sub">Contas cadastradas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -765,12 +765,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — DETALHES (Cockpit 360°)
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-detalhes">
+<template id="tpl-screen-usuarios-detalhes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Detalhes da Conta</div><div class="topbar-sub">Cockpit 360° do usuário</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showScreen('usuarios-contas')">← Voltar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -837,12 +837,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — ADMINS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-admins">
+<template id="tpl-screen-usuarios-admins">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Administradores</div><div class="topbar-sub">Gestão de acesso ao BackOffice</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Admin</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -860,12 +860,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — PERMISSÕES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-permissoes">
+<template id="tpl-screen-usuarios-permissoes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Permissões</div><div class="topbar-sub">Controle de acesso por seção</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -888,12 +888,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — LOGS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-logs">
+<template id="tpl-screen-usuarios-logs">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Logs de Acesso</div><div class="topbar-sub">Auditoria de acessos ao BackOffice</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -917,12 +917,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: USUÁRIOS — TRANSFERÊNCIA ENTRE CONTAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-usuarios-transferencia">
+<template id="tpl-screen-usuarios-transferencia">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transferência entre Contas</div><div class="topbar-sub">Operação administrativa de P2P</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -956,12 +956,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: EMPRESAS — CADASTROS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-empresas-cadastros">
+<template id="tpl-screen-empresas-cadastros">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Empresas</div><div class="topbar-sub">Cadastros PJ</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -980,12 +980,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: EMPRESAS — DOCUMENTOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-empresas-documentos">
+<template id="tpl-screen-empresas-documentos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Documentos</div><div class="topbar-sub">Documentação PJ enviada</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1004,12 +1004,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: EMPRESAS — COMPLIANCE
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-empresas-compliance">
+<template id="tpl-screen-empresas-compliance">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Compliance PJ</div><div class="topbar-sub">Análise de conformidade de empresas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1027,12 +1027,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: TRANSAÇÕES — TODAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-transacoes-todas">
+<template id="tpl-screen-transacoes-todas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transações</div><div class="topbar-sub">Todas as transações</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1063,12 +1063,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: TRANSAÇÕES — PIX
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-transacoes-pix">
+<template id="tpl-screen-transacoes-pix">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transações PIX</div><div class="topbar-sub">Histórico de transações PIX</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1092,12 +1092,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: TRANSAÇÕES — TED
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-transacoes-ted">
+<template id="tpl-screen-transacoes-ted">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transações TED</div><div class="topbar-sub">Transferências bancárias externas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1115,12 +1115,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: TRANSAÇÕES — BOLETOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-transacoes-boletos">
+<template id="tpl-screen-transacoes-boletos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Boletos</div><div class="topbar-sub">Pagamentos e cobranças via boleto</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1138,12 +1138,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: TRANSAÇÕES — AGENDADAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-transacoes-agendadas">
+<template id="tpl-screen-transacoes-agendadas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transações Agendadas</div><div class="topbar-sub">Pagamentos e transferências programadas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1161,12 +1161,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — CHAVES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-chaves">
+<template id="tpl-screen-pix-chaves">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Chaves PIX</div><div class="topbar-sub">Gestão de chaves cadastradas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1186,12 +1186,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — COBRANÇAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-cobrancas">
+<template id="tpl-screen-pix-cobrancas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Cobranças PIX</div><div class="topbar-sub">QR Codes de cobrança gerados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1209,12 +1209,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — DEVOLUÇÕES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-devolucoes">
+<template id="tpl-screen-pix-devolucoes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Devoluções PIX</div><div class="topbar-sub">Solicitações de devolução</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1231,12 +1231,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — MED 2.0
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-med">
+<template id="tpl-screen-pix-med">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">MED 2.0</div><div class="topbar-sub">Mecanismo Especial de Devolução</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1254,12 +1254,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — RECORRÊNCIAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-recorrencias">
+<template id="tpl-screen-pix-recorrencias">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">PIX Automático</div><div class="topbar-sub">Recorrências e débitos automáticos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1276,12 +1276,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: PIX — PORTABILIDADE
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-pix-portabilidade">
+<template id="tpl-screen-pix-portabilidade">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Portabilidade de Chaves</div><div class="topbar-sub">Solicitações de portabilidade e reivindicação</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1298,12 +1298,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: FINANCEIRO — INVESTIMENTOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-financeiro-investimentos">
+<template id="tpl-screen-financeiro-investimentos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Investimentos</div><div class="topbar-sub">Operações de investimento por conta</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Operação</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1327,12 +1327,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: FINANCEIRO — SALDOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-financeiro-saldos">
+<template id="tpl-screen-financeiro-saldos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Saldos</div><div class="topbar-sub">Posição de saldo por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1357,12 +1357,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: FINANCEIRO — EXTRATOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-financeiro-extratos">
+<template id="tpl-screen-financeiro-extratos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Extratos</div><div class="topbar-sub">Extrato consolidado por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar CSV</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1386,12 +1386,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: FINANCEIRO — LIMITES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-financeiro-limites">
+<template id="tpl-screen-financeiro-limites">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Limites</div><div class="topbar-sub">Limites PIX e TED por conta</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1411,12 +1411,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: FINANCEIRO — TARIFAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-financeiro-tarifas">
+<template id="tpl-screen-financeiro-tarifas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Tarifas</div><div class="topbar-sub">Configuração de tarifas por produto</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Tarifa</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1438,12 +1438,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: SEGURANÇA — CAUTELAR
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-seguranca-cautelar">
+<template id="tpl-screen-seguranca-cautelar">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Bloqueio Cautelar</div><div class="topbar-sub">Contas bloqueadas por suspeita de fraude</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1462,12 +1462,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: SEGURANÇA — DISPOSITIVOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-seguranca-dispositivos">
+<template id="tpl-screen-seguranca-dispositivos">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Dispositivos</div><div class="topbar-sub">Gestão de dispositivos autorizados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1486,12 +1486,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: SEGURANÇA — AUDITORIA
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-seguranca-auditoria">
+<template id="tpl-screen-seguranca-auditoria">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Auditoria</div><div class="topbar-sub">Trilha de auditoria completa do sistema</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1514,12 +1514,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: RELATÓRIOS — OPERACIONAL
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-relatorios-operacional">
+<template id="tpl-screen-relatorios-operacional">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Relatório Operacional</div><div class="topbar-sub">Indicadores operacionais do período</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1546,12 +1546,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: RELATÓRIOS — FINANCEIRO
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-relatorios-financeiro">
+<template id="tpl-screen-relatorios-financeiro">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Relatório Financeiro</div><div class="topbar-sub">Receitas, despesas e volume transacionado</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1587,12 +1587,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: RELATÓRIOS — COMPLIANCE
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-relatorios-compliance">
+<template id="tpl-screen-relatorios-compliance">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Relatório de Compliance</div><div class="topbar-sub">COAF, KYC e PLD/FT</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">⬇ Gerar PDF</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1618,12 +1618,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — DASHBOARD
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-dashboard">
+<template id="tpl-screen-asaas-dashboard">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Asaas</div><div class="topbar-sub">Dashboard de cobranças e pagamentos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1654,12 +1654,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — CLIENTES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-clientes">
+<template id="tpl-screen-asaas-clientes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Clientes Asaas</div><div class="topbar-sub">Clientes cadastrados na plataforma Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Cliente</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1678,12 +1678,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — COBRANÇAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-cobrancas">
+<template id="tpl-screen-asaas-cobrancas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Cobranças Asaas</div><div class="topbar-sub">Cobranças geradas via Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Cobrança</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1706,12 +1706,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — ASSINATURAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-assinaturas">
+<template id="tpl-screen-asaas-assinaturas">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Assinaturas Asaas</div><div class="topbar-sub">Planos de cobrança recorrente</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Assinatura</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1729,12 +1729,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — TRANSFERÊNCIAS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-transferencias">
+<template id="tpl-screen-asaas-transferencias">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Transferências Asaas</div><div class="topbar-sub">Transferências para conta bancária</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1751,12 +1751,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — EXTRATO
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-extrato">
+<template id="tpl-screen-asaas-extrato">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Extrato Asaas</div><div class="topbar-sub">Movimentação da conta Asaas</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm">⬇ Exportar</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1779,12 +1779,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: ASAAS — PIX
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-asaas-pix">
+<template id="tpl-screen-asaas-pix">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Chaves PIX Asaas</div><div class="topbar-sub">Chaves PIX da conta Asaas</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Adicionar Chave</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1801,12 +1801,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — DASHBOARD
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-dashboard">
+<template id="tpl-screen-credito-dashboard">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Crédito (ESC)</div><div class="topbar-sub">Dashboard de Empresa Simples de Crédito</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1840,12 +1840,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — OPERAÇÕES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-operacoes">
+<template id="tpl-screen-credito-operacoes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Operações de Crédito</div><div class="topbar-sub">Empréstimos e antecipações</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Nova Operação</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1867,12 +1867,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — CEDENTES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-cedentes">
+<template id="tpl-screen-credito-cedentes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Cedentes</div><div class="topbar-sub">Empresas cedentes de crédito</div></div><div class="topbar-right"><button class="btn btn-primary btn-sm">+ Novo Cedente</button><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1889,12 +1889,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — SACADOS
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-sacados">
+<template id="tpl-screen-credito-sacados">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Sacados</div><div class="topbar-sub">Devedores das operações de crédito</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1911,12 +1911,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — CALCULADORA
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-calculadora">
+<template id="tpl-screen-credito-calculadora">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Calculadora de Crédito</div><div class="topbar-sub">Simulação de operações ESC</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1945,12 +1945,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CRÉDITO — REGISTROS CERC/B3
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-credito-registros">
+<template id="tpl-screen-credito-registros">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Registros CERC / B3</div><div class="topbar-sub">Garantias e recebíveis registrados</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -1968,12 +1968,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CONFIGURAÇÕES — GERAL
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-configuracoes-geral">
+<template id="tpl-screen-configuracoes-geral">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Configurações</div><div class="topbar-sub">Configurações gerais do sistema</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -2006,12 +2006,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CONFIGURAÇÕES — NOTIFICAÇÕES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-configuracoes-notificacoes">
+<template id="tpl-screen-configuracoes-notificacoes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Notificações</div><div class="topbar-sub">Configuração de alertas e notificações</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -2028,12 +2028,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
 
 <!-- ══════════════════════════════════════════════════════
      SCREEN: CONFIGURAÇÕES — INTEGRAÇÕES
 ══════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-configuracoes-integracoes">
+<template id="tpl-screen-configuracoes-integracoes">
   <div class="main">
     <div class="topbar"><div><div class="topbar-title">Integrações</div><div class="topbar-sub">APIs e serviços externos</div></div><div class="topbar-right"><button class="btn btn-ghost btn-sm" onclick="showIndex()">☰ Telas</button></div></div>
     <div class="content">
@@ -2055,7 +2055,12 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </div>
   </div>
-</div>
+</template>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN HOST (lazy-rendered screens are cloned here)
+══════════════════════════════════════════════════════ -->
+<div id="screenHost"></div>
 
 <!-- ══════════════════════════════════════════════════════
      FLOATING LABEL
@@ -2080,12 +2085,27 @@ function showScreen(id) {
   // Hide index
   document.getElementById('screenIndex').classList.add('hidden');
 
-  // Hide all screens
+  // Hide all eager screens (the 3 login variants live inline)
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
 
-  // Show target
-  const target = document.getElementById('screen-' + id);
-  if (!target) { console.warn('Screen not found:', id); return; }
+  // Clear lazy host
+  const host = document.getElementById('screenHost');
+  host.innerHTML = '';
+
+  // Try eager first (login flow)
+  let target = document.getElementById('screen-' + id);
+
+  // Fall back to lazy template
+  if (!target) {
+    const tpl = document.getElementById('tpl-screen-' + id);
+    if (!tpl) { console.warn('Screen not found:', id); return; }
+    const wrap = document.createElement('div');
+    wrap.className = 'screen';
+    wrap.id = 'screen-' + id;
+    wrap.appendChild(tpl.content.cloneNode(true));
+    host.appendChild(wrap);
+    target = wrap;
+  }
 
   // Inject sidebar if not login screen
   if (!target.classList.contains('screen-login')) {
@@ -2160,6 +2180,8 @@ function showScreen(id) {
 
 function showIndex() {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const host = document.getElementById('screenHost');
+  if (host) host.innerHTML = '';
   document.getElementById('screenIndex').classList.remove('hidden');
 }
 
